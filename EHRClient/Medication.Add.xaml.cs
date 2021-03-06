@@ -1,5 +1,4 @@
-﻿using EHR.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,25 +10,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EHRClient
+namespace EHR.Client
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Medication.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MedicationAdd : Window
     {
-        public MainWindow()
+        public MedicationAdd()
         {
             InitializeComponent();
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard dash = new Dashboard();
-            dash.Show();
             this.Close();
         }
     }

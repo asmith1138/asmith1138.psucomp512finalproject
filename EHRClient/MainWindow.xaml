@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EHRClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="300" Width="200">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Image HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" Name="Logo"/>
+        <Label Grid.Row="0" Content="User Name" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Height="48" FontSize="20"/>
+        <TextBox HorizontalAlignment="Center" Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Name="Username" Grid.Row="0"/>
+        <Label Grid.Row="1" Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Height="48" FontSize="20"/>
+        <PasswordBox HorizontalAlignment="Center" PasswordChar="*" VerticalAlignment="Center" Width="120" Name="Password" Grid.Row="1"/>
+        <Button Content="Log in" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="-0.309,-0.383" Name="Login" Grid.Row="2" Width="57" Click="Login_Click"/>
 
     </Grid>
 </Window>

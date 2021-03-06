@@ -7,4 +7,270 @@
     <AssemblyName>EHR.Client</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Update="Test - Copy %282%29 - Copy %282%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy %282%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy %283%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy %284%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3) - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3) - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %284%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (4).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %284%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (4) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %284%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (4).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %284%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %285%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy (5).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %285%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy %286%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2) - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2) - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %283%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %283%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (3) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %283%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %284%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy (4).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %284%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy %285%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %282%29 - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %282%29 - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy (2) - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %283%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy (3).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy %284%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy %282%29 - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy - Copy (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Test - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Test.xaml.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Test - Copy %282%29.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Test - Copy %284%29.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
