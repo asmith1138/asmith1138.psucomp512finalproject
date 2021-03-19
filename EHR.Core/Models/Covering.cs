@@ -9,7 +9,7 @@ namespace EHR.Data.Models
     public class Covering
     {
         public Guid PatientId { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public bool Primary { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

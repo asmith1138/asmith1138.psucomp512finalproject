@@ -9,7 +9,7 @@ namespace EHR.Data.Models
     {
         public int Id { get; set; }
         public Guid PatientId { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public string Name { get; set; }
         public string Frequency { get; set; }
         public string Dosage { get; set; }
