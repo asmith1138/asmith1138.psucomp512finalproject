@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EHR.Data;
 using EHR.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EHR.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TestTypesController : ControllerBase
     {
         private readonly EHRContext _context;
@@ -23,6 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/TestTypes
         [HttpGet]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<IEnumerable<TestType>>> GetTypesOfTests()
         {
             return await _context.TypesOfTests.ToListAsync();
@@ -30,6 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/TestTypes/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<TestType>> GetTestType(int id)
         {
             var testType = await _context.TypesOfTests.FindAsync(id);
@@ -45,6 +50,7 @@ namespace EHR.Server.Controllers
         // PUT: api/TestTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> PutTestType(int id, TestType testType)
         {
             if (id != testType.Id)
@@ -76,6 +82,7 @@ namespace EHR.Server.Controllers
         // POST: api/TestTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<TestType>> PostTestType(TestType testType)
         {
             _context.TypesOfTests.Add(testType);
@@ -86,6 +93,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/TestTypes/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeleteTestType(int id)
         {
             var testType = await _context.TypesOfTests.FindAsync(id);

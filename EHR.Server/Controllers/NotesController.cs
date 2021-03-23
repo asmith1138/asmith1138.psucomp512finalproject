@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EHR.Data;
 using EHR.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EHR.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NotesController : ControllerBase
     {
         private readonly EHRContext _context;
@@ -23,6 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Notes
         [HttpGet]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
         {
             return await _context.Notes.ToListAsync();
@@ -30,6 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Notes/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<Note>> GetNote(int id)
         {
             var note = await _context.Notes.FindAsync(id);
@@ -45,6 +50,7 @@ namespace EHR.Server.Controllers
         // PUT: api/Notes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> PutNote(int id, Note note)
         {
             if (id != note.Id)
@@ -76,6 +82,7 @@ namespace EHR.Server.Controllers
         // POST: api/Notes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<Note>> PostNote(Note note)
         {
             _context.Notes.Add(note);
@@ -86,6 +93,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Notes/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeleteNote(int id)
         {
             var note = await _context.Notes.FindAsync(id);

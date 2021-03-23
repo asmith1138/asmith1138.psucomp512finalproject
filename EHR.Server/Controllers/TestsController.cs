@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EHR.Data;
 using EHR.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EHR.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TestsController : ControllerBase
     {
         private readonly EHRContext _context;
@@ -23,6 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Tests
         [HttpGet]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<IEnumerable<Test>>> GetTests()
         {
             return await _context.Tests.ToListAsync();
@@ -30,6 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Tests/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<Test>> GetTest(int id)
         {
             var test = await _context.Tests.FindAsync(id);
@@ -45,6 +50,7 @@ namespace EHR.Server.Controllers
         // PUT: api/Tests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> PutTest(int id, Test test)
         {
             if (id != test.Id)
@@ -76,6 +82,7 @@ namespace EHR.Server.Controllers
         // POST: api/Tests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
             _context.Tests.Add(test);
@@ -86,6 +93,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Tests/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeleteTest(int id)
         {
             var test = await _context.Tests.FindAsync(id);

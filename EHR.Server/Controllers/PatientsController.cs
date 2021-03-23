@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EHR.Data;
 using EHR.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EHR.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PatientsController : ControllerBase
     {
         private readonly EHRContext _context;
@@ -23,6 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Patients
         [HttpGet]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
         {
             return await _context.Patients.ToListAsync();
@@ -30,6 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Patients/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<Patient>> GetPatient(Guid id)
         {
             var patient = await _context.Patients.FindAsync(id);
@@ -45,6 +50,7 @@ namespace EHR.Server.Controllers
         // PUT: api/Patients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> PutPatient(Guid id, Patient patient)
         {
             if (id != patient.MRN)
@@ -76,6 +82,7 @@ namespace EHR.Server.Controllers
         // POST: api/Patients
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<Patient>> PostPatient(Patient patient)
         {
             _context.Patients.Add(patient);
@@ -86,6 +93,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Patients/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeletePatient(Guid id)
         {
             var patient = await _context.Patients.FindAsync(id);

@@ -11,7 +11,7 @@ namespace EHR.Data.Models
         //public Guid Id { get; set; }
         //public string UserName { get; set; }
         //public string Email { get; set; }
-        public int RoleId { get; set; }
+        public string RoleId { get; set; }
         //public string Password { get; set; }
         public virtual Role Role { get; set; }
         public virtual IQueryable<Note> NotesWritten { get; set; }

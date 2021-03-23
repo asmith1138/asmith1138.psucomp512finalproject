@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EHR.Data;
 using EHR.Data.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EHR.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MedicationsController : ControllerBase
     {
         private readonly EHRContext _context;
@@ -23,6 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Medications
         [HttpGet]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<IEnumerable<Medication>>> GetMedications()
         {
             return await _context.Medications.ToListAsync();
@@ -30,6 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Medications/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Doctor,Nurse")]
         public async Task<ActionResult<Medication>> GetMedication(int id)
         {
             var medication = await _context.Medications.FindAsync(id);
@@ -45,6 +50,7 @@ namespace EHR.Server.Controllers
         // PUT: api/Medications/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> PutMedication(int id, Medication medication)
         {
             if (id != medication.Id)
@@ -76,6 +82,7 @@ namespace EHR.Server.Controllers
         // POST: api/Medications
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<ActionResult<Medication>> PostMedication(Medication medication)
         {
             _context.Medications.Add(medication);
@@ -86,6 +93,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Medications/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeleteMedication(int id)
         {
             var medication = await _context.Medications.FindAsync(id);

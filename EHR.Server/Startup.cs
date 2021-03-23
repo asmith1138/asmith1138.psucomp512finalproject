@@ -48,11 +48,13 @@ namespace EHR.Server
                         ValidAudience = Configuration["Tokens:Issuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
                     };
+                    
 
                 });
+            
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<EHRContext>();
-
+            services.AddAuthorization();
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -64,11 +66,15 @@ namespace EHR.Server
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());// .AllowCredentials());
+
             app.UseHsts();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -3,15 +3,17 @@ using System;
 using EHR.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace EHR.Data.Migrations
 {
     [DbContext(typeof(EHRContext))]
-    partial class EHRContextModelSnapshot : ModelSnapshot
+    [Migration("20210321161641_RoleUpdate")]
+    partial class RoleUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
