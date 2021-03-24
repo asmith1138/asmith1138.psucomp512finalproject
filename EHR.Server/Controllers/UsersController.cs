@@ -51,7 +51,7 @@ namespace EHR.Server.Controllers
         // GET: api/Users/5
         [HttpGet]
         [Route("Me")]
-        [Authorize(Roles = "Doctor,Nurse,Admin")]
+        [Authorize(Roles = "Physician,Nurse,Admin")]
         public async Task<ActionResult<User>> GetMe()
         {
             string email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;

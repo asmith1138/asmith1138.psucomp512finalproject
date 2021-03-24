@@ -26,7 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Patients
         [HttpGet]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
         {
             return await _context.Patients.ToListAsync();
@@ -34,23 +34,25 @@ namespace EHR.Server.Controllers
 
         // GET: api/Patients/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Doctor,Nurse")]
-        public async Task<ActionResult<Patient>> GetPatient(Guid id)
+        [Authorize(Roles = "Physician,Nurse")]
+        public ActionResult<Patient> GetPatient(Guid id)
         {
-            var patient = await _context.Patients.FindAsync(id);
+            var patient = _context.Patients
+                .Include(p => p.Tests).Include(p => p.Medications).Include(p => p.Notes).Include(p => p.CareTeam)
+                .SingleOrDefault(p => p.MRN == id);
 
             if (patient == null)
             {
                 return NotFound();
             }
 
-            return patient;
+            return Ok(patient);
         }
 
         // PUT: api/Patients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutPatient(Guid id, Patient patient)
         {
             if (id != patient.MRN)
@@ -82,7 +84,7 @@ namespace EHR.Server.Controllers
         // POST: api/Patients
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Patient>> PostPatient(Patient patient)
         {
             _context.Patients.Add(patient);
@@ -93,7 +95,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Patients/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeletePatient(Guid id)
         {
             var patient = await _context.Patients.FindAsync(id);

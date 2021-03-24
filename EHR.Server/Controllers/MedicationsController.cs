@@ -26,7 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Medications
         [HttpGet]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Medication>>> GetMedications()
         {
             return await _context.Medications.ToListAsync();
@@ -34,7 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Medications/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<Medication>> GetMedication(int id)
         {
             var medication = await _context.Medications.FindAsync(id);
@@ -47,10 +47,26 @@ namespace EHR.Server.Controllers
             return medication;
         }
 
+        // GET: api/Medications/Patient/5
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Physician,Nurse")]
+        [Route("Patient/{id}")]
+        public ActionResult<IEnumerable<Medication>> GetPatientMedications(Guid id)
+        {
+            var meds = _context.Medications.Where(t => t.PatientId == id);
+
+            if (meds == null)
+            {
+                return NotFound();
+            }
+
+            return this.Ok(meds);
+        }
+
         // PUT: api/Medications/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutMedication(int id, Medication medication)
         {
             if (id != medication.Id)
@@ -82,7 +98,7 @@ namespace EHR.Server.Controllers
         // POST: api/Medications
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Medication>> PostMedication(Medication medication)
         {
             _context.Medications.Add(medication);
@@ -93,7 +109,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Medications/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteMedication(int id)
         {
             var medication = await _context.Medications.FindAsync(id);

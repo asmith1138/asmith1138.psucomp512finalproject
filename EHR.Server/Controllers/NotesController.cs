@@ -26,7 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Notes
         [HttpGet]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
         {
             return await _context.Notes.ToListAsync();
@@ -34,7 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Notes/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<Note>> GetNote(int id)
         {
             var note = await _context.Notes.FindAsync(id);
@@ -47,10 +47,26 @@ namespace EHR.Server.Controllers
             return note;
         }
 
+        // GET: api/Notes/Patient/5
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Physician,Nurse")]
+        [Route("Patient/{id}")]
+        public ActionResult<IEnumerable<Note>> GetPatientNotes(Guid id)
+        {
+            var notes = _context.Notes.Where(t => t.PatientId == id);
+
+            if (notes == null)
+            {
+                return NotFound();
+            }
+
+            return this.Ok(notes);
+        }
+
         // PUT: api/Notes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutNote(int id, Note note)
         {
             if (id != note.Id)
@@ -82,7 +98,7 @@ namespace EHR.Server.Controllers
         // POST: api/Notes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Note>> PostNote(Note note)
         {
             _context.Notes.Add(note);
@@ -93,7 +109,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Notes/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteNote(int id)
         {
             var note = await _context.Notes.FindAsync(id);

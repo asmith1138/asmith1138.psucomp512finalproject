@@ -26,7 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Tests
         [HttpGet]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Test>>> GetTests()
         {
             return await _context.Tests.ToListAsync();
@@ -34,7 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/Tests/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<Test>> GetTest(int id)
         {
             var test = await _context.Tests.FindAsync(id);
@@ -47,10 +47,26 @@ namespace EHR.Server.Controllers
             return test;
         }
 
+        // GET: api/Tests/Patient/5
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Physician,Nurse")]
+        [Route("Patient/{id}")]
+        public ActionResult<IEnumerable<Test>> GetPatientTest(Guid id)
+        {
+            var tests = _context.Tests.Include(t=>t.TestType).Where(t=>t.PatientId==id);
+
+            if (tests == null)
+            {
+                return NotFound();
+            }
+
+            return this.Ok(tests);
+        }
+
         // PUT: api/Tests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutTest(int id, Test test)
         {
             if (id != test.Id)
@@ -82,7 +98,7 @@ namespace EHR.Server.Controllers
         // POST: api/Tests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
             _context.Tests.Add(test);
@@ -93,7 +109,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/Tests/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteTest(int id)
         {
             var test = await _context.Tests.FindAsync(id);

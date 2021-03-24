@@ -26,7 +26,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/TestTypes
         [HttpGet]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<TestType>>> GetTypesOfTests()
         {
             return await _context.TypesOfTests.ToListAsync();
@@ -34,7 +34,7 @@ namespace EHR.Server.Controllers
 
         // GET: api/TestTypes/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Doctor,Nurse")]
+        [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<TestType>> GetTestType(int id)
         {
             var testType = await _context.TypesOfTests.FindAsync(id);
@@ -50,7 +50,7 @@ namespace EHR.Server.Controllers
         // PUT: api/TestTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutTestType(int id, TestType testType)
         {
             if (id != testType.Id)
@@ -82,7 +82,7 @@ namespace EHR.Server.Controllers
         // POST: api/TestTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<ActionResult<TestType>> PostTestType(TestType testType)
         {
             _context.TypesOfTests.Add(testType);
@@ -93,7 +93,7 @@ namespace EHR.Server.Controllers
 
         // DELETE: api/TestTypes/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteTestType(int id)
         {
             var testType = await _context.TypesOfTests.FindAsync(id);
