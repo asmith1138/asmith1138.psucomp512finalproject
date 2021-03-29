@@ -7,6 +7,6 @@ namespace EHR.Data.Models
     public class TestType
     {
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
     }
 }

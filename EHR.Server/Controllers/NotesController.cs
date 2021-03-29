@@ -9,6 +9,7 @@ using EHR.Data;
 using EHR.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace EHR.Server.Controllers
 {
@@ -48,7 +49,7 @@ namespace EHR.Server.Controllers
         }
 
         // GET: api/Notes/Patient/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         [Authorize(Roles = "Physician,Nurse")]
         [Route("Patient/{id}")]
         public ActionResult<IEnumerable<Note>> GetPatientNotes(Guid id)
@@ -74,6 +75,7 @@ namespace EHR.Server.Controllers
                 return BadRequest();
             }
 
+            note.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Entry(note).State = EntityState.Modified;
 
             try

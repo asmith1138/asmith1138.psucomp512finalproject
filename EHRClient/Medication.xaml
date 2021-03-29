@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="Medication" Height="400" Width="200">
     <Grid>
-        <Label Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Ordered By" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Frequency" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Dose" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Expires At" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="PatientName" Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="OrderedBy" Content="Ordered By" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="Frequency" Content="Frequency" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="Dose" Content="Dose" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="ExpiresAt" Content="Expires At" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>

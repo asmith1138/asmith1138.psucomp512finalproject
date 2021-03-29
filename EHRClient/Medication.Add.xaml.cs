@@ -1,6 +1,10 @@
-﻿using System;
+﻿using EHR.Data.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,14 +23,84 @@ namespace EHR.Client
     /// </summary>
     public partial class MedicationAdd : Window
     {
-        public MedicationAdd()
+        private string token;
+        private EHR.Data.Models.Medication medication;
+        private Patient patient;
+        public MedicationAdd(string token, Patient patient)
         {
             InitializeComponent();
+            this.token = token;
+            this.medication = new EHR.Data.Models.Medication();
+            this.patient = patient;
+            this.PatientName.Content = patient.Name;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            this.medication.Name = this.PatientMed.Text;
+            this.medication.PatientId = this.patient.MRN;
+            this.medication.Dosage = this.PatientDose.Text;
+            this.medication.Frequency = this.PatientFreq.Text;
+            var expAt = this.PatientExpAt.Text.Split('/');
+            this.medication.Expires = new DateTime(int.Parse(expAt[2]), int.Parse(expAt[0]), int.Parse(expAt[1]));
+            postMedication();
             this.Close();
+        }
+
+
+        private void postMedication()
+        {
+            PostMedicationInfo().Wait();
+        }
+
+        public async Task PostMedicationInfo()
+        {
+            try
+            {
+                // client call
+                using (var client = new HttpClient())
+                {
+                    // Base address 
+                    client.BaseAddress = new Uri("https://localhost:44339/");
+
+                    // content type 
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                    // timeout 
+                    client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
+
+                    // Msg init  
+                    HttpResponseMessage response = new HttpResponseMessage();
+
+                    // Body
+                    string json = JsonConvert.SerializeObject(this.medication);
+                    StringContent body = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+
+                    // HTTP POST  
+                    response = await client.PostAsync("api/Medications", body).ConfigureAwait(false);
+
+                    // Verification  
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reading and ignoring response   
+                        string result = response.Content.ReadAsStringAsync().Result;
+
+                        // Releasing 
+                        response.Dispose();
+                    }
+                    else
+                    {
+                        // Reading Response
+                        string result = response.Content.ReadAsStringAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

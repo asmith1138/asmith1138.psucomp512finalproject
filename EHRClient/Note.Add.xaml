@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="Add a Note" Height="250" Width="300">
     <Grid>
-        <Label Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="PatientName" Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Note" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
         <Button Content="Submit" HorizontalAlignment="Left" Margin="180,180,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <RichTextBox HorizontalAlignment="Left" Margin="15,90,0,0" VerticalAlignment="Top" Height="60" Width="200"/>
+        <RichTextBox Name="NoteText" HorizontalAlignment="Left" Margin="15,90,0,0" VerticalAlignment="Top" Height="60" Width="200"/>
 
     </Grid>
 </Window>

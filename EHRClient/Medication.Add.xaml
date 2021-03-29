@@ -13,15 +13,15 @@
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="PatientName" Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Medication" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Frequency" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Dose" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Expires At" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox HorizontalAlignment="Left" Margin="120,60,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="120,90,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="120,120,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="120,150,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="PatientMed" HorizontalAlignment="Left" Margin="120,60,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="PatientFreq" HorizontalAlignment="Left" Margin="120,90,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="PatientDose" HorizontalAlignment="Left" Margin="120,120,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="PatientExpAt" HorizontalAlignment="Left" Margin="120,150,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Content="Submit" HorizontalAlignment="Left" Margin="200,180,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
     </Grid>

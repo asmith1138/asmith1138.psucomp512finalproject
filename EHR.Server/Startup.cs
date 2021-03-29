@@ -32,7 +32,10 @@ namespace EHR.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            //services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             var connectionString = Configuration.GetConnectionString("EHRContext");
             services.AddEntityFrameworkNpgsql().AddDbContext<EHRContext>(options => options.UseNpgsql(connectionString));
 

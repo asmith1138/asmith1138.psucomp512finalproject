@@ -13,9 +13,9 @@ namespace EHR.Data.Models
         public decimal Weight { get; set; }
         public decimal Height { get; set; }
         public DateTime DOB { get; set; }
-        public virtual IQueryable<Note> Notes { get; set; }
-        public virtual IQueryable<Test> Tests { get; set; }
-        public virtual IQueryable<Medication> Medications { get; set; }
-        public virtual IQueryable<Covering> CareTeam { get; set; }
+        public virtual ICollection<Note> Notes { get; set; }
+        public virtual ICollection<Test> Tests { get; set; }
+        public virtual ICollection<Medication> Medications { get; set; }
+        public virtual ICollection<Covering> CareTeam { get; set; }
     }
 }

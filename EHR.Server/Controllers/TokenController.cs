@@ -58,7 +58,8 @@ namespace EHR.Server.Controllers
                           new Claim(ClaimTypes.Name, user.UserName),
                           new Claim(ClaimTypes.Email, user.Email),
                           //new Claim(ClaimTypes.NameIdentifier, user.Id),
-                          new Claim(ClaimTypes.Role,user.Role.Name)
+                          new Claim(ClaimTypes.Role,user.Role.Name),
+                          new Claim(ClaimTypes.UserData, user.Id)
                         };
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));

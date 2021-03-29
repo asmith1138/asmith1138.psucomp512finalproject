@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EHR.Core\EHR.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Test - Copy %282%29 - Copy %282%29 - Copy %282%29.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>Test - Copy (2) - Copy (2).xaml.cs</DependentUpon>

@@ -9,6 +9,7 @@ using EHR.Data;
 using EHR.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace EHR.Server.Controllers
 {
@@ -74,6 +75,7 @@ namespace EHR.Server.Controllers
                 return BadRequest();
             }
 
+            medication.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Entry(medication).State = EntityState.Modified;
 
             try

@@ -9,6 +9,7 @@ using EHR.Data;
 using EHR.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace EHR.Server.Controllers
 {
@@ -53,7 +54,7 @@ namespace EHR.Server.Controllers
         [Route("Patient/{id}")]
         public ActionResult<IEnumerable<Test>> GetPatientTest(Guid id)
         {
-            var tests = _context.Tests.Include(t=>t.TestType).Where(t=>t.PatientId==id);
+            var tests = _context.Tests.Include(t => t.TestType).Where(t => t.PatientId == id);
 
             if (tests == null)
             {
@@ -74,6 +75,7 @@ namespace EHR.Server.Controllers
                 return BadRequest();
             }
 
+            test.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Entry(test).State = EntityState.Modified;
 
             try

@@ -14,9 +14,9 @@ namespace EHR.Data.Models
         public string RoleId { get; set; }
         //public string Password { get; set; }
         public virtual Role Role { get; set; }
-        public virtual IQueryable<Note> NotesWritten { get; set; }
-        public virtual IQueryable<Test> TestsOrdered { get; set; }
-        public virtual IQueryable<Medication> MedicationsOrdered { get; set; }
-        public virtual IQueryable<Covering> PatientsCovering { get; set; }
+        public virtual ICollection<Note> NotesWritten { get; set; }
+        public virtual ICollection<Test> TestsOrdered { get; set; }
+        public virtual ICollection<Medication> MedicationsOrdered { get; set; }
+        public virtual ICollection<Covering> PatientsCovering { get; set; }
     }
 }
