@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EHR.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,20 @@ namespace EHR.Client
     /// </summary>
     public partial class Test : Window
     {
-        public Test()
+        private string token;
+        private EHR.Data.Models.Test test;
+        private Patient patient;
+        public Test(string token, Patient patient, EHR.Data.Models.Test test)
         {
             InitializeComponent();
+            this.token = token;
+            this.patient = patient;
+            this.test = test;
+            this.PatientName.Content = patient.Name;
+            this.TestType.Content = test.TestType.Name;
+            this.Results.Content = test.Results;
+            this.Performed.Content = test.Performed;
+            this.OrderedBy.Content = test.UserOrdered.UserName;
         }
     }
 }

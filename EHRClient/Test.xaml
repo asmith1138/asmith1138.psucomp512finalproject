@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         Title="Test" Height="400" Width="200">
     <Grid Margin="0,0,0,0">
-        <Label Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Ordered By" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Results" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Height="200" Width="150"/>
-
+        <Label Name="PatientName" Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="OrderedBy" Content="Ordered By" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="TestType" Content="Test Type" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="Performed" Content="Performed" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="Results" Content="Results" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Height="200" Width="150"/>
     </Grid>
 </Window>

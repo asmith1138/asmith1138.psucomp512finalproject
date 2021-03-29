@@ -103,6 +103,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Medication>> PostMedication(Medication medication)
         {
+            medication.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Medications.Add(medication);
             await _context.SaveChangesAsync();
 

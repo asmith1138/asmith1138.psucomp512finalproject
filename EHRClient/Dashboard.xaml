@@ -27,8 +27,8 @@
         <ListBox Name="PatientsList" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="0,48,0,0" DisplayMemberPath="Name" SelectionChanged="PatientsList_SelectionChanged" />
         <Button Content="Log out" HorizontalAlignment="Right" Grid.Column="3" Grid.Row="0" VerticalAlignment="Top" Height="52" Width="61" Click="Button_Click"/>
         <ListBox Name="Medications" Grid.Column="1" Grid.Row="1" Margin="0,48,0,0" MouseDoubleClick="Medications_MouseDoubleClick" DisplayMemberPath="Name" />
-        <ListBox Name="Tests" Grid.Column="2" Grid.Row="1" DisplayMemberPath="TestType.Name" Margin="0,48,0,0"/>
-        <ListBox Name="Notes" Grid.Column="3" Grid.Row="1" DisplayMemberPath="Text" Margin="0,48,0,0"/>
+        <ListBox Name="Tests" Grid.Column="2" Grid.Row="1" DisplayMemberPath="TestType.Name" MouseDoubleClick="Tests_MouseDoubleClick"  Margin="0,48,0,0"/>
+        <ListBox Name="Notes" Grid.Column="3" Grid.Row="1" DisplayMemberPath="Text" MouseDoubleClick="Notes_MouseDoubleClick"  Margin="0,48,0,0"/>
         <Label Grid.Column="1" Grid.Row="1" Content="Medications" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Height="48" FontSize="20"/>
         <Label Grid.Column="2" Grid.Row="1" Content="Tests" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Height="48" FontSize="20"/>
         <Label Grid.Column="3" Grid.Row="1" Content="Notes" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Height="48" FontSize="20"/>

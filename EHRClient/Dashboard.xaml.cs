@@ -139,11 +139,23 @@ namespace EHR.Client
         {
             Medication med = new Medication(this.token, this.patient, (EHR.Data.Models.Medication)this.Medications.SelectedValue);
             bool? dialog = med.ShowDialog();
+        }
+
+        private void Tests_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Test test = new Test(this.token, this.patient, (EHR.Data.Models.Test)this.Tests.SelectedValue);
+            bool? dialog = test.ShowDialog();
             if (dialog.HasValue)
             {
                 //GetPatientMedInfo().Wait();
                 //this.Tests.ItemsSource = this.patient.Tests;
             }
+        }
+
+        private void Notes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Note note = new Note(this.token, this.patient, (EHR.Data.Models.Note)this.Notes.SelectedValue);
+            bool? dialog = note.ShowDialog();
         }
 
         private void PatientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)

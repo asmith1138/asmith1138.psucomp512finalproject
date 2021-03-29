@@ -11,6 +11,5 @@
         <ComboBox Name="TestTypeId" DisplayMemberPath="Name" SelectedValuePath="Id" HorizontalAlignment="Left" Margin="120,60,0,0" VerticalAlignment="Top" Width="120"/>
         <Label Content="Test" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
         <Button Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,90,0,0" Click="Button_Click"/>
-
     </Grid>
 </Window>

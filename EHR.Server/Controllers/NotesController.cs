@@ -103,6 +103,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Note>> PostNote(Note note)
         {
+            note.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
 

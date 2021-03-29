@@ -103,6 +103,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
+            test.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Tests.Add(test);
             await _context.SaveChangesAsync();
 

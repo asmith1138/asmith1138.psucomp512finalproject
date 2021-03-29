@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="Note" Height="400" Width="200">
     <Grid>
-        <Label Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Note By" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Note" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Height="200" Width="150"/>
+        <Label Name="PatientName" Content="Patient Name" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="NoteBy" Content="Note By" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="Recorded" Content="Recorded" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Name="NoteText" Content="Note" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Height="200" Width="150"/>
     </Grid>
 </Window>
