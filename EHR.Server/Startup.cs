@@ -37,7 +37,7 @@ namespace EHR.Server
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
             var connectionString = Configuration.GetConnectionString("EHRContext");
-            services.AddEntityFrameworkNpgsql().AddDbContext<EHRContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<EHRContext>(options => options.UseNpgsql(connectionString));
 
             services.AddAuthentication()
                 .AddJwtBearer(cfg =>
@@ -58,6 +58,7 @@ namespace EHR.Server
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<EHRContext>();
             services.AddAuthorization();
+            services.AddLogging();
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
