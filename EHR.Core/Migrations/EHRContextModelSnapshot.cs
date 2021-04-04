@@ -278,9 +278,9 @@ namespace EHR.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Patient");
+                    //b.Navigation("Patient");
 
-                    b.Navigation("User");
+                    //b.Navigation("User");
                 });
 
             modelBuilder.Entity("EHR.Data.Models.Medication", b =>
@@ -299,9 +299,9 @@ namespace EHR.Data.Migrations
                         .WithMany("MedicationsOrdered")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Patient");
+                    //b.Navigation("Patient");
 
-                    b.Navigation("UserOrdered");
+                    //b.Navigation("UserOrdered");
                 });
 
             modelBuilder.Entity("EHR.Data.Models.Note", b =>
@@ -320,9 +320,9 @@ namespace EHR.Data.Migrations
                         .WithMany("NotesWritten")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Patient");
+                    //b.Navigation("Patient");
 
-                    b.Navigation("UserOrdered");
+                    //b.Navigation("UserOrdered");
                 });
 
             modelBuilder.Entity("EHR.Data.Models.Test", b =>
@@ -347,11 +347,11 @@ namespace EHR.Data.Migrations
                         .WithMany("TestsOrdered")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Patient");
+                    //b.Navigation("Patient");
 
-                    b.Navigation("TestType");
+                    //b.Navigation("TestType");
 
-                    b.Navigation("UserOrdered");
+                    //b.Navigation("UserOrdered");
                 });
 
             modelBuilder.Entity("EHR.Data.Models.User", b =>
@@ -360,29 +360,29 @@ namespace EHR.Data.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.Navigation("Role");
+                    //b.Navigation("Role");
                 });
 
             modelBuilder.Entity("EHR.Data.Models.Patient", b =>
                 {
-                    b.Navigation("CareTeam");
+                    //b.Navigation("CareTeam");
 
-                    b.Navigation("Medications");
+                    //b.Navigation("Medications");
 
-                    b.Navigation("Notes");
+                    //b.Navigation("Notes");
 
-                    b.Navigation("Tests");
+                    //b.Navigation("Tests");
                 });
 
             modelBuilder.Entity("EHR.Data.Models.User", b =>
                 {
-                    b.Navigation("MedicationsOrdered");
+                    //b.Navigation("MedicationsOrdered");
 
-                    b.Navigation("NotesWritten");
+                    //b.Navigation("NotesWritten");
 
-                    b.Navigation("PatientsCovering");
+                    //b.Navigation("PatientsCovering");
 
-                    b.Navigation("TestsOrdered");
+                    //b.Navigation("TestsOrdered");
                 });
 #pragma warning restore 612, 618
         }
