@@ -1,4 +1,5 @@
-﻿using EHR.Data.Models;
+﻿using EHR.Client.Helpers;
+using EHR.Data.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,21 +22,28 @@ namespace EHR.Client
     /// <summary>
     /// Interaction logic for Test.xaml
     /// </summary>
-    public partial class TestAdd : Window
+    public partial class TestAdd : Window, IActivable
     {
         private string token;
         private EHR.Data.Models.Test test;
         private Patient patient;
         private List<TestType> testTypes;
+        private readonly AppSettings settings;
+        private readonly SimpleNavigationService navigationService;
         public TestAdd(string token, Patient patient)
         {
             InitializeComponent();
+        }
+
+        public Task ActivateAsync(string token, Patient patient)
+        {
             this.token = token;
             this.test = new EHR.Data.Models.Test();
             this.patient = patient;
             this.PatientName.Content = patient.Name;
             getTestTypes();
             this.TestTypeId.ItemsSource = testTypes;
+            return Task.CompletedTask;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -64,7 +72,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Base address 
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // content type 
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -117,7 +125,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();

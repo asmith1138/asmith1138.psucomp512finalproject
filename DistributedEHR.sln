@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EHR.Client", "EHRClient\EHR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EHR.Server", "EHR.Server\EHR.Server.csproj", "{41A3C8BB-7ADC-4450-A86A-F9F6AB5B1241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EHR.Data", "EHR.Core\EHR.Data.csproj", "{ADAADADD-6C93-4964-B14C-7B1475788640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EHR.Data", "EHR.Core\EHR.Data.csproj", "{ADAADADD-6C93-4964-B14C-7B1475788640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

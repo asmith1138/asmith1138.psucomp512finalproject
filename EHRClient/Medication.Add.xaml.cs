@@ -1,4 +1,5 @@
-﻿using EHR.Data.Models;
+﻿using EHR.Client.Helpers;
+using EHR.Data.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,18 +22,25 @@ namespace EHR.Client
     /// <summary>
     /// Interaction logic for Medication.xaml
     /// </summary>
-    public partial class MedicationAdd : Window
+    public partial class MedicationAdd : Window, IActivable
     {
         private string token;
         private EHR.Data.Models.Medication medication;
         private Patient patient;
+        private readonly AppSettings settings;
+        private readonly SimpleNavigationService navigationService;
         public MedicationAdd(string token, Patient patient)
         {
-            InitializeComponent();
+            InitializeComponent();            
+        }
+
+        public Task ActivateAsync(string token, Patient patient)
+        {
             this.token = token;
             this.medication = new EHR.Data.Models.Medication();
             this.patient = patient;
             this.PatientName.Content = patient.Name;
+            return Task.CompletedTask;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -61,7 +69,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Base address 
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // content type 
                     client.DefaultRequestHeaders.Accept.Clear();

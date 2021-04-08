@@ -1,4 +1,5 @@
-﻿using EHR.Data.Models;
+﻿using EHR.Client.Helpers;
+using EHR.Data.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,18 +22,25 @@ namespace EHR.Client
     /// <summary>
     /// Interaction logic for Note.xaml
     /// </summary>
-    public partial class NoteAdd : Window
+    public partial class NoteAdd : Window, IActivable
     {
         private string token;
         private EHR.Data.Models.Note note;
         private Patient patient;
+        private readonly AppSettings settings;
+        private readonly SimpleNavigationService navigationService;
         public NoteAdd(string token, Patient patient)
         {
             InitializeComponent();
+        }
+
+        public Task ActivateAsync(string token, Patient patient)
+        {
             this.token = token;
             this.note = new EHR.Data.Models.Note();
             this.patient = patient;
             this.PatientName.Content = patient.Name;
+            return Task.CompletedTask;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -57,7 +65,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Base address 
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // content type
                     client.DefaultRequestHeaders.Accept.Clear();

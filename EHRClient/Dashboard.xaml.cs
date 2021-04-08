@@ -1,5 +1,8 @@
-﻿using EHR.Data.Models;
+﻿using EHR.Client.Helpers;
+using EHR.Data.Models;
 using EHRClient;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,17 +26,27 @@ namespace EHR.Client
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class Dashboard : Window
+    public partial class Dashboard : Window, IActivable
     {
         private string token;
         private Patient patient;
         private List<Patient> patients;
-        public Dashboard(string token)
+        private readonly AppSettings settings;
+        private readonly SimpleNavigationService navigationService;
+
+        public Dashboard(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
+            this.navigationService = navigationService;
+            this.settings = settings.Value;
+        }
+
+        public Task ActivateAsync(string token, Patient patient)
+        {
             this.token = token;
             setPatients();
             this.PatientsList.ItemsSource = patients;
+            return Task.CompletedTask;
         }
 
         private void setPatients()
@@ -52,7 +65,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -96,8 +109,11 @@ namespace EHR.Client
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow logon = new MainWindow();
-            logon.Show();
+            //ar mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            //mainWindow.Show();
+            //MainWindow logon = new MainWindow();
+            navigationService.ShowAsync<MainWindow>().Wait();
+            //logon.Show();
             this.Close();
         }
 
