@@ -3,13 +3,18 @@ using EHR.Client.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Owin.Builder;
+using Microsoft.Owin.Host.HttpListener;
+using Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Windows;
 
 namespace EHRClient
@@ -33,6 +38,9 @@ namespace EHRClient
 
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
+
+            //var appBuilder = new AppBuilder();
+            //Configure(appBuilder);
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
@@ -58,7 +66,24 @@ namespace EHRClient
             services.AddTransient(typeof(Test));
             services.AddTransient(typeof(Medication));
             services.AddTransient(typeof(Note));
-            //services.AddTransient(typeof(Dashboard));
+            services.AddTransient(typeof(Chat));
+        }
+
+        public void Configure(IAppBuilder appBuilder)
+        {
+            
+            HttpConfiguration config = new HttpConfiguration();
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            appBuilder.UseWebApi(config);
+            //HttpListener listener =
+            //    (HttpListener)appBuilder.Properties["System.Net.HttpListener"];
+            //listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
         }
     }
 }
