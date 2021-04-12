@@ -1,6 +1,7 @@
 ﻿using EHR.Client.Controllers;
 using EHRClient;
-using Microsoft.Owin.Host.HttpListener;
+using Microsoft.AspNetCore.Hosting;
+//using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.SelfHost;
+//using System.Web.Http;
+//using System.Web.Http.SelfHost;
 
 namespace EHR.Client.Helpers
 {
@@ -22,7 +23,8 @@ namespace EHR.Client.Helpers
         private ShowReceivedMessage _srm;
         private ShowError _sst;
         private HttpClient _client;
-        private HttpSelfHostServer _server;
+        //private HttpSelfHostServer _server;
+        private IWebHost _host;
         private IDisposable _serverDep;
 
         //constructor
@@ -34,7 +36,7 @@ namespace EHR.Client.Helpers
                 _srm = srm;
                 _sst = sst;
                 _client = new HttpClient() { BaseAddress = new Uri(partneraddress) };
-                //ChatController.ThrowMessageArrivedEvent += (sender, args) => { ShowMessage(args.Message); };
+                ChatController.ThrowMessageArrivedEvent += (sender, args) => { ShowMessage(args.Message); };
             }
         }
 
@@ -49,8 +51,29 @@ namespace EHR.Client.Helpers
                 //  routeTemplate: "api/{controller}/{id}",
                 //  defaults: new { id = RouteParameter.Optional }
                 //);
+
+
                 // Start OWIN host
-                _serverDep = WebApp.Start<P2PServer>(url);
+                //_serverDep = WebApp.Start<P2PServer>(url);
+                _host = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls(url)
+                .UseStartup<P2PServer>()
+                .Build();
+
+                _host.RunAsync();
+                //var config = new HttpSelfHostConfiguration(url);
+                //config.Routes.MapHttpRoute(
+                //                    name: "DefaultApi",
+                //                    routeTemplate: "api/{controller}/{id}",
+                //                    defaults: new { id = RouteParameter.Optional }
+                //                    );
+
+                //_server = new HttpSelfHostServer(config);
+                //_server.OpenAsync().Wait();
+
+
+
 
                 //using (WebApp.Start(url))
                 //{
@@ -67,6 +90,8 @@ namespace EHR.Client.Helpers
                 //        //Assert.Equal(2, result.Count);
                 //    }
                 //}
+
+
                 //_server = new HttpSelfHostServer(config);
                 //_server.OpenAsync().Wait();
                 Status = true;
@@ -80,7 +105,8 @@ namespace EHR.Client.Helpers
         private void stopChatServer()
         {
             //_server.CloseAsync().Wait();
-            _serverDep.Dispose();
+            //_serverDep.Dispose();
+            _host.StopAsync();
         }
         private void ShowMessage(Message m)
         {

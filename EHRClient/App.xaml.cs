@@ -1,4 +1,5 @@
 ﻿using EHR.Client;
+using EHR.Client.Controllers;
 using EHR.Client.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Windows;
 
 namespace EHRClient
@@ -67,6 +69,9 @@ namespace EHRClient
             services.AddTransient(typeof(Medication));
             services.AddTransient(typeof(Note));
             services.AddTransient(typeof(Chat));
+
+            
+            //services.AddControllers().AddApplicationPart(typeof(ChatController).Assembly);
         }
 
         public void Configure(IAppBuilder appBuilder)

@@ -1,18 +1,22 @@
 ﻿using EHR.Client.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace EHR.Client.Controllers
 {
-    public class ChatController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ChatController : ControllerBase
     {
-        public void Post(MessageReceiver simpleMessage)
+        [HttpPost]
+        public ActionResult Post([FromBody]MessageReceiver simpleMessage)
         {
             MessageArrived(new Message(simpleMessage));
+            return Ok();
         }
 
         public delegate void EventHandler(object sender, MessageEventArgs args);
