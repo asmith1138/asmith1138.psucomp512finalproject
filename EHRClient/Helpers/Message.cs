@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -12,7 +13,7 @@ namespace EHR.Client.Helpers
         public string Username { get; set; }
         public string Text { get; set; }
         public DateTime Sent { get; set; }
-        public FormUrlEncodedContent serializedMessage { get; set; }
+        public string serializedMessage { get; set; }
 
         public Message(MessageReceiver m)
         {
@@ -30,7 +31,7 @@ namespace EHR.Client.Helpers
             dict.Add("Text", text);
             dict.Add("Username", username);
             dict.Add("Sent", DateTime.Now.ToString());
-            serializedMessage = new FormUrlEncodedContent(dict);
+            serializedMessage = JsonConvert.SerializeObject(dict);
         }
     }
 

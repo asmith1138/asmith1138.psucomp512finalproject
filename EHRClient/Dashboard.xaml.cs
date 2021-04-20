@@ -348,7 +348,7 @@ namespace EHR.Client
 
         private void Chat_Click(object sender, RoutedEventArgs e)
         {
-            navigationService.ShowAsync<Chat>().Wait();
+            navigationService.ShowAsync<Chat>(token, patient).Wait();
             //Chat chat = new Chat();// (this.token, this.patient, (EHR.Data.Models.Note)this.Notes.SelectedValue);
         }
     }

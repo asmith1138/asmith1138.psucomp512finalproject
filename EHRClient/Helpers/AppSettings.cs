@@ -9,5 +9,6 @@ namespace EHR.Client.Helpers
     public class AppSettings
     {
         public string ApiUrl { get; set; }
+        public string HubUrl { get; set; }
     }
 }

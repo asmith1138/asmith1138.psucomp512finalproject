@@ -59,6 +59,7 @@ namespace EHR.Server
                 .AddEntityFrameworkStores<EHRContext>();
             services.AddAuthorization();
             services.AddLogging();
+            services.AddSignalR();
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -89,6 +90,11 @@ namespace EHR.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<Hubs.ChatHub>("/Chat");
             });
 
             //app.UseMvc();

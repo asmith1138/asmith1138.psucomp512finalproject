@@ -1,99 +1,89 @@
 ﻿using EHR.Client.Controllers;
+using EHR.Data.Models;
 using EHRClient;
 using Microsoft.AspNetCore.Hosting;
-//using Microsoft.Owin.Host.HttpListener;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Web.Http;
-//using System.Web.Http.SelfHost;
 
 namespace EHR.Client.Helpers
 {
     public class ChatProxy
     {
         public bool Status { get; set; }
+        public Patient _patient;
+        public string _token;
         public delegate void ShowReceivedMessage(Message m);
         public delegate void ShowError(string txt);
         private ShowReceivedMessage _srm;
         private ShowError _sst;
-        private HttpClient _client;
-        //private HttpSelfHostServer _server;
+        private List<Tuple<string,string,HttpClient>> _clients;
         private IWebHost _host;
-        private IDisposable _serverDep;
+        private HubConnection _server;
+        private AppSettings _settings;
 
         //constructor
-        public ChatProxy(ShowReceivedMessage srm, ShowError sst, string myport, string partneraddress)
+        public ChatProxy(ShowReceivedMessage srm, ShowError sst, string myport, string partneraddress, string token, Patient patient, AppSettings settings)
         {
-            StartChatServer(myport);
+            _patient = patient;
+            _token = token;
+            _settings = settings;
+            StartChatServer("9001");
             if (Status)
             {
                 _srm = srm;
                 _sst = sst;
-                _client = new HttpClient() { BaseAddress = new Uri(partneraddress) };
+
+                _clients = new List<Tuple<string, string, HttpClient>>();
+                //AddNewClient("-1","Local",partneraddress);
+                
                 ChatController.ThrowMessageArrivedEvent += (sender, args) => { ShowMessage(args.Message); };
             }
+        }
+
+        private void AddNewClient(string ConnId, string username, string partneraddress)
+        {
+            //new client
+            var client = new HttpClient() { BaseAddress = new Uri(partneraddress) };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _clients.Add(new Tuple<string, string, HttpClient>(ConnId, username, client));
         }
 
         private void StartChatServer(string myport)
         {
             try
             {
-                string url = "http://localhost:" + myport + "/";
-                //HttpSelfHostConfiguration config = new HttpSelfHostConfiguration(url);
-                //config.Routes.MapHttpRoute(
-                //  name: "DefaultApi",
-                //  routeTemplate: "api/{controller}/{id}",
-                //  defaults: new { id = RouteParameter.Optional }
-                //);
-
+                string url = "http://" + NetworkIP.GetLocalIPAddress() + ":" + myport + "/";
 
                 // Start OWIN host
-                //_serverDep = WebApp.Start<P2PServer>(url);
                 _host = new WebHostBuilder()
-                .UseKestrel()
-                .UseUrls(url)
-                .UseStartup<P2PServer>()
-                .Build();
+                    .UseKestrel()
+                    .UseUrls(url)
+                    .UseStartup<P2PServer>()
+                    .Build();
 
                 _host.RunAsync();
-                //var config = new HttpSelfHostConfiguration(url);
-                //config.Routes.MapHttpRoute(
-                //                    name: "DefaultApi",
-                //                    routeTemplate: "api/{controller}/{id}",
-                //                    defaults: new { id = RouteParameter.Optional }
-                //                    );
+                
+                _server = new HubConnectionBuilder()
+                    .WithUrl(_settings.HubUrl +  "/Chat")
+                    .Build();
 
-                //_server = new HttpSelfHostServer(config);
-                //_server.OpenAsync().Wait();
+                _server.Closed += async (error) =>
+                {
+                    await Task.Delay(new Random().Next(0, 5) * 1000);
+                    await _server.StartAsync();
+                };
 
+                ConnectHub(url);
 
-
-
-                //using (WebApp.Start(url))
-                //{
-                //    var handler = new HttpClientHandler
-                //    {
-                //        UseDefaultCredentials = true
-                //    };
-                //    using (var client = new HttpClient(handler))
-                //    {
-                //        //client.BaseAddress = new Uri(url);
-                //        //var response = await client.GetAsync("/api/Chat");
-                //        //response.EnsureSuccessStatusCode();
-                //        //var result = await response.Content.ReadAsAsync<List<string>>();
-                //        //Assert.Equal(2, result.Count);
-                //    }
-                //}
-
-
-                //_server = new HttpSelfHostServer(config);
-                //_server.OpenAsync().Wait();
                 Status = true;
             }
             catch (Exception e)
@@ -102,10 +92,70 @@ namespace EHR.Client.Helpers
                 ShowErrorMsg("Something happened!");
             }
         }
+
+        private async void ConnectHub(string url)
+        {
+            //uri to be added
+            _server.On<string,string,string>("Ready", (ConnId, username, uri) =>
+            {
+                if(ConnId != _server.ConnectionId)
+                {
+                    AddNewClient(ConnId, username, uri);
+                }       
+            });
+
+            //uri to be removed
+            _server.On<string>("Left", (ConnId) =>
+            {
+                _clients.Remove(_clients.SingleOrDefault(c => c.Item1 == ConnId));
+            });
+
+            //Return MRN and list of clients in group
+            _server.On<string[],string[],string[]>("Joined", (connids, names, urls) =>
+            {
+                if(connids.Length == names.Length && connids.Length == urls.Length)
+                {
+                    var parts = connids
+                    .Zip(names, (c, n) => new { ConnId = c, Name = n })
+                    .Zip(urls, (g, u) => new { ConnId = g.ConnId, Name = g.Name, Url = u });
+
+                    foreach(var part in parts)
+                    {
+                        if (part.ConnId != _server.ConnectionId)
+                        {
+                            AddNewClient(part.ConnId, part.Name, part.Url);
+                        }
+                    }
+                }
+            });
+
+            try
+            {
+                await _server.StartAsync();
+                await _server.InvokeAsync("Join",_patient.MRN, "Me", url);
+            }
+            catch (Exception ex)
+            {
+                //Failed to connect to hub
+                ShowErrorMsg("An Error occurred while connecting to the room");
+            }
+        }
+
+        private async void sendThruHub(string message)
+        {
+            try
+            {
+                await _server.InvokeAsync("SendMessage",
+                    _patient.MRN, message);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(new Message("Error", ex.Message));
+            }
+        }
+
         private void stopChatServer()
         {
-            //_server.CloseAsync().Wait();
-            //_serverDep.Dispose();
             _host.StopAsync();
         }
         private void ShowMessage(Message m)
@@ -121,15 +171,21 @@ namespace EHR.Client.Helpers
         {
             try
             {
-                HttpResponseMessage response = await _client.PostAsync("api/chat", m.serializedMessage);
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                    ShowErrorMsg("Partner responded, but awkwardly! Better hide!");
+                foreach(var client in _clients)
+                {
+                    HttpResponseMessage response = await client.Item3.PostAsync(
+                    "api/chat",
+                    new StringContent(m.serializedMessage, UnicodeEncoding.UTF8, "application/json"));
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                        ShowErrorMsg("A partner responded, but not 200!");
+                }
                 ShowMessage(m);
             }
             catch (Exception e)
             {
-                stopChatServer();
-                ShowErrorMsg("Partner unreachable. Closing your server!");
+                //TODO: Call server for 1 partner that failed
+                ShowErrorMsg("A member is unreachable!");
+
             }
         }
     }
