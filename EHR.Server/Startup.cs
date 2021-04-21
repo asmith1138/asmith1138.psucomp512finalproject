@@ -90,12 +90,13 @@ namespace EHR.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<Hubs.ChatHub>("/Chat");
             });
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<Hubs.ChatHub>("/Chat");
-            });
+            //app.UseSignalR(routes =>
+            //{
+            //    routes.MapHub<Hubs.ChatHub>("/Chat");
+            //});
 
             //app.UseMvc();
         }
