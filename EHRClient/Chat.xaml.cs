@@ -27,16 +27,18 @@ namespace EHR.Client
         private Patient patient;
         private string token;
         private readonly AppSettings settings;
+        private string username;
 
         public Chat(IOptions<AppSettings> settings)
         {
             InitializeComponent();
             this.settings = settings.Value;
         }
-        public Task ActivateAsync(string token, Patient patient)
+        public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
             this.patient = patient;
+            this.username = username;
             return Task.CompletedTask;
         }
 
@@ -51,8 +53,8 @@ namespace EHR.Client
             {
                 if (_cp != null)
                 {
-                    if (!string.IsNullOrEmpty(userName.Text) && !string.IsNullOrEmpty(inputText.Text))
-                        sendMessage(new Message(userName.Text, inputText.Text));
+                    if (!string.IsNullOrEmpty(inputText.Text))
+                        sendMessage(new Message(username, inputText.Text));
                     else
                         ShowStatus("Nothing to send!");
                 }
@@ -67,8 +69,8 @@ namespace EHR.Client
         {
             if (_cp != null)
             {
-                if (!string.IsNullOrEmpty(userName.Text) && !string.IsNullOrEmpty(inputText.Text))
-                    sendMessage(new Message(userName.Text, inputText.Text));
+                if (!string.IsNullOrEmpty(inputText.Text))
+                    sendMessage(new Message(username, inputText.Text));
                 else
                     ShowStatus("Nothing to send!");
             }
@@ -99,18 +101,11 @@ namespace EHR.Client
 
         private void startChat(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(textBoxMyPort.Text) && !string.IsNullOrWhiteSpace(textBoxPartnerAddress.Text))
+            _cp = new ChatProxy(this.ShowMessage, this.ShowStatus, token, patient, settings, username);
+            if (_cp.Status)
             {
-                _cp = new ChatProxy(this.ShowMessage, this.ShowStatus, textBoxMyPort.Text, textBoxPartnerAddress.Text, token, patient, settings);
-                if (_cp.Status)
-                {
-                    chatArea.Text += ("Ready to chat!");
-                    chatArea.Text += Environment.NewLine;
-                }
-            }
-            else
-            {
-                ShowStatus("Please fill in all the fields!");
+                chatArea.Text += ("Ready to chat!");
+                chatArea.Text += Environment.NewLine;
             }
         }
     }

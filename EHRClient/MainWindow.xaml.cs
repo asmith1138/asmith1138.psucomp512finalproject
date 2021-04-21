@@ -37,7 +37,7 @@ namespace EHRClient
             this.navigationService = navigationService;
         }
 
-        public Task ActivateAsync(string token, Patient patient)
+        public Task ActivateAsync(string token, Patient patient, string username)
         {
             return Task.CompletedTask;
         }
@@ -49,7 +49,7 @@ namespace EHRClient
             {
                 //Dashboard dash = new Dashboard(token);
                 //dash.Show();
-                navigationService.ShowAsync<Dashboard>(token).Wait();
+                navigationService.ShowAsync<Dashboard>(token, null, this.Username.Text).Wait();
                 this.Close();
             }
             else

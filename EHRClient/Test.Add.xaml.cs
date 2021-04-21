@@ -35,7 +35,7 @@ namespace EHR.Client
             InitializeComponent();
         }
 
-        public Task ActivateAsync(string token, Patient patient)
+        public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
             this.test = new EHR.Data.Models.Test();

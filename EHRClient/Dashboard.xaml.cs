@@ -32,6 +32,7 @@ namespace EHR.Client
         private List<Patient> patients;
         private readonly AppSettings settings;
         private readonly SimpleNavigationService navigationService;
+        private string username;
 
         public Dashboard(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
@@ -40,11 +41,12 @@ namespace EHR.Client
             this.settings = settings.Value;
         }
 
-        public Task ActivateAsync(string token, Patient patient)
+        public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
             setPatients();
             this.PatientsList.ItemsSource = patients;
+            this.username = username;
             return Task.CompletedTask;
         }
 
@@ -348,7 +350,7 @@ namespace EHR.Client
 
         private void Chat_Click(object sender, RoutedEventArgs e)
         {
-            navigationService.ShowAsync<Chat>(token, patient).Wait();
+            navigationService.ShowAsync<Chat>(token, patient, username).Wait();
             //Chat chat = new Chat();// (this.token, this.patient, (EHR.Data.Models.Note)this.Notes.SelectedValue);
         }
     }

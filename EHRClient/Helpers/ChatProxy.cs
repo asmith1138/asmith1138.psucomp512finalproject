@@ -20,6 +20,7 @@ namespace EHR.Client.Helpers
         public bool Status { get; set; }
         public Patient _patient;
         public string _token;
+        public string _username;
         public delegate void ShowReceivedMessage(Message m);
         public delegate void ShowError(string txt);
         private ShowReceivedMessage _srm;
@@ -30,11 +31,12 @@ namespace EHR.Client.Helpers
         private AppSettings _settings;
 
         //constructor
-        public ChatProxy(ShowReceivedMessage srm, ShowError sst, string myport, string partneraddress, string token, Patient patient, AppSettings settings)
+        public ChatProxy(ShowReceivedMessage srm, ShowError sst, string token, Patient patient, AppSettings settings, string username)
         {
             _patient = patient;
             _token = token;
             _settings = settings;
+            _username = username;
             StartChatServer("9001");
             if (Status)
             {
@@ -132,7 +134,7 @@ namespace EHR.Client.Helpers
             try
             {
                 await _server.StartAsync();
-                await _server.InvokeAsync("Join",_patient.MRN, "Me", url);
+                await _server.InvokeAsync("Join", _patient.MRN, _username, url);
             }
             catch (Exception ex)
             {
