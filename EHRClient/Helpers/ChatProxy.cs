@@ -137,7 +137,7 @@ namespace EHR.Client.Helpers
             catch (Exception ex)
             {
                 //Failed to connect to hub
-                ShowErrorMsg("An Error occurred while connecting to the room");
+                ShowErrorMsg(ex.Message);
             }
         }
 
