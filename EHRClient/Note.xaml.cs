@@ -32,7 +32,7 @@ namespace EHR.Client
             this.PatientName.Content = patient.Name;
             this.NoteText.Content = note.Text;
             this.Recorded.Content = note.Recorded;
-            this.NoteBy.Content = note.UserOrdered.UserName;
+            this.NoteBy.Content = note.UserOrdered?.UserName;
         }
     }
 }

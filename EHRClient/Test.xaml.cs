@@ -33,7 +33,7 @@ namespace EHR.Client
             this.TestType.Content = test.TestType.Name;
             this.Results.Content = test.Results;
             this.Performed.Content = test.Performed;
-            this.OrderedBy.Content = test.UserOrdered.UserName;
+            this.OrderedBy.Content = test.UserOrdered?.UserName;
         }
     }
 }
