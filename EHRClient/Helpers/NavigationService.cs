@@ -34,13 +34,12 @@ namespace EHR.Client.Helpers
             window.Show();
         }
 
-        public async Task<bool?> ShowDialogAsync<T>(string token = null, Patient patient = null, string username = null)
-            where T : Window
+        public async Task<bool?> ShowDialogAsync<T>(string token = null, Patient patient = null, string username = null) where T : Window
         {
             var window = serviceProvider.GetRequiredService<T>();
             if (window is IActivable activableWindow)
             {
-                await activableWindow.ActivateAsync(token, patient);
+                await activableWindow.ActivateAsync(token, patient, username);
             }
 
             return window.ShowDialog();

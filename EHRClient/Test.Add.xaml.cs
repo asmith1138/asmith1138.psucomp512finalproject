@@ -1,5 +1,6 @@
 ﻿using EHR.Client.Helpers;
 using EHR.Data.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,11 @@ namespace EHR.Client
         private List<TestType> testTypes;
         private readonly AppSettings settings;
         private readonly SimpleNavigationService navigationService;
-        public TestAdd(string token, Patient patient)
+        public TestAdd(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
+            this.navigationService = navigationService;
+            this.settings = settings.Value;
         }
 
         public Task ActivateAsync(string token, Patient patient, string username)

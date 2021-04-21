@@ -29,12 +29,13 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
         {
-            return await _context.Patients
-                .Include(p => p.Tests).ThenInclude(t=>t.UserOrdered)
+            var patients = await _context.Patients
+                .Include(p => p.Tests).ThenInclude(t => t.UserOrdered)
                 .Include(p => p.Tests).ThenInclude(t => t.TestType)
                 .Include(p => p.Medications).ThenInclude(m => m.UserOrdered)
                 .Include(p => p.Notes).ThenInclude(n => n.UserOrdered)
                 .Include(p => p.CareTeam).ToListAsync();
+            return patients;
         }
 
         // GET: api/Patients/5

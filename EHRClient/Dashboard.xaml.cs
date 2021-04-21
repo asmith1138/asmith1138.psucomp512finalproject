@@ -110,18 +110,13 @@ namespace EHR.Client
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //ar mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-            //mainWindow.Show();
-            //MainWindow logon = new MainWindow();
             navigationService.ShowAsync<MainWindow>().Wait();
-            //logon.Show();
             this.Close();
         }
 
         private void AddMed_Click(object sender, RoutedEventArgs e)
         {
-            MedicationAdd medadd = new MedicationAdd(this.token, this.patient);
-            bool? dialog = medadd.ShowDialog();
+            bool? dialog = navigationService.ShowDialogAsync<MedicationAdd>(this.token, this.patient, this.username).Result;
             if (dialog.HasValue)
             {
                 GetPatientMedInfo().Wait();
@@ -131,8 +126,7 @@ namespace EHR.Client
 
         private void AddTest_Click(object sender, RoutedEventArgs e)
         {
-            TestAdd testadd = new TestAdd(this.token, this.patient);
-            bool? dialog = testadd.ShowDialog();
+            bool? dialog = navigationService.ShowDialogAsync<TestAdd>(this.token, this.patient, this.username).Result;
             if (dialog.HasValue)
             {
                 GetPatientTestInfo().Wait();
@@ -142,8 +136,7 @@ namespace EHR.Client
 
         private void AddNote_Click(object sender, RoutedEventArgs e)
         {
-            NoteAdd noteadd = new NoteAdd(this.token, this.patient);
-            bool? dialog = noteadd.ShowDialog();
+            bool? dialog = navigationService.ShowDialogAsync<NoteAdd>(this.token, this.patient, this.username).Result;
             if (dialog.HasValue)
             {
                 GetPatientNoteInfo().Wait();
@@ -162,11 +155,6 @@ namespace EHR.Client
         {
             Test test = new Test(this.token, this.patient, (EHR.Data.Models.Test)this.Tests.SelectedValue);
             bool? dialog = test.ShowDialog();
-            if (dialog.HasValue)
-            {
-                //GetPatientMedInfo().Wait();
-                //this.Tests.ItemsSource = this.patient.Tests;
-            }
         }
 
         private void Notes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
