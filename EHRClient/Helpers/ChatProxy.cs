@@ -37,7 +37,7 @@ namespace EHR.Client.Helpers
             _token = token;
             _settings = settings;
             _username = username;
-            StartChatServer("9001");
+            StartChatServer("1138");
             if (Status)
             {
                 _srm = srm;
