@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
@@ -20,6 +19,7 @@ namespace EHR.Server.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            roomManager.RemoveFromAnyRoom(Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
 
@@ -140,6 +140,14 @@ namespace EHR.Server.Hubs
             {
                 rooms.SingleOrDefault(r => r.Value.MRN == mrn).Value.Participants.Remove(
                     rooms.SingleOrDefault(rm => rm.Value.MRN == mrn).Value.Participants.SingleOrDefault(p=>p.Item1 == id));
+            }
+
+            public void RemoveFromAnyRoom(string id)
+            {
+                foreach(var room in rooms)
+                {
+                    room.Value.Participants.Remove(room.Value.Participants.SingleOrDefault(p => p.Item1 == id));
+                }
             }
 
             public void DeleteRoom(int roomId)
