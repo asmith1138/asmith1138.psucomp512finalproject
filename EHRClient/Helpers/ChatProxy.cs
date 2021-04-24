@@ -63,7 +63,7 @@ namespace EHR.Client.Helpers
         {
             try
             {
-                string url = "http://" + NetworkIP.GetLocalIPAddress() + ":" + myport + "/";
+                string url = "http://" + NetworkIP.GetLocalIP() + ":" + myport + "/";
 
                 // Start OWIN host
                 _host = new WebHostBuilder()
