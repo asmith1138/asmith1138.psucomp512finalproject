@@ -108,5 +108,10 @@ namespace EHR.Client
                 chatArea.Text += Environment.NewLine;
             }
         }
+
+        private void Chat_Closed(object sender, EventArgs e)
+        {
+            _cp?.stopChatServer();
+        }
     }
 }

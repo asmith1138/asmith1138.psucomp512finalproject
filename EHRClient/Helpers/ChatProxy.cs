@@ -156,9 +156,10 @@ namespace EHR.Client.Helpers
             }
         }
 
-        private void stopChatServer()
+        public void stopChatServer()
         {
-            _host.StopAsync();
+            _host?.StopAsync();
+            _server?.StopAsync();
         }
         private void ShowMessage(Message m)
         {
@@ -171,24 +172,23 @@ namespace EHR.Client.Helpers
 
         public async void SendMessage(Message m)
         {
-            try
+            foreach (var client in _clients)
             {
-                foreach(var client in _clients)
+                try
                 {
                     HttpResponseMessage response = await client.Item3.PostAsync(
-                    "api/chat",
-                    new StringContent(m.serializedMessage, UnicodeEncoding.UTF8, "application/json"));
+                        "api/chat",
+                        new StringContent(m.serializedMessage, UnicodeEncoding.UTF8, "application/json"));
                     if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         ShowErrorMsg("A partner responded, but not 200!");
                 }
-                ShowMessage(m);
+                catch (Exception e)
+                {
+                    //TODO: Call server for 1 partner that failed
+                    ShowErrorMsg("A member is unreachable!");
+                }
             }
-            catch (Exception e)
-            {
-                //TODO: Call server for 1 partner that failed
-                ShowErrorMsg("A member is unreachable!");
-
-            }
+            ShowMessage(m);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace EHR.Server.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            string mrn = roomManager.FindRoomByConnectionId(Context.ConnectionId).MRN;
+            Clients.Group(mrn).SendAsync("Left", Context.ConnectionId);
             roomManager.RemoveFromAnyRoom(Context.ConnectionId);
             return base.OnDisconnectedAsync(exception);
         }
@@ -134,6 +136,11 @@ namespace EHR.Server.Hubs
             public RoomInfo FindRoom(string mrn)
             {
                 return rooms.SingleOrDefault(r => r.Value.MRN == mrn).Value;
+            }
+
+            public RoomInfo FindRoomByConnectionId(string id)
+            {
+                return rooms.FirstOrDefault(r => r.Value.Participants.Any(p => p.Item1 == id)).Value;
             }
 
             public void RemoveFromRoom(string mrn, string id)
