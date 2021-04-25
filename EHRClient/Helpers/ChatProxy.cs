@@ -112,6 +112,13 @@ namespace EHR.Client.Helpers
                 _clients.Remove(_clients.SingleOrDefault(c => c.Item1 == ConnId));
             });
 
+            //Server fallback messaging
+            _server.On<object>("ServerMessage", (message) =>
+            {
+                ShowMessage((Message)message);
+                //_clients.Remove(_clients.SingleOrDefault(c => c.Item1 == ConnId));
+            });
+
             //Return MRN and list of clients in group
             _server.On<string[],string[],string[]>("Joined", (connids, names, urls) =>
             {
@@ -184,7 +191,8 @@ namespace EHR.Client.Helpers
                 }
                 catch (Exception e)
                 {
-                    //TODO: Call server for 1 partner that failed
+                    //TODO: Call server for 1 partner that failed 
+                    await _server.InvokeAsync("SendOneMessage", _patient.MRN, m, client.Item1);
                     ShowErrorMsg("A member is unreachable!");
                 }
             }

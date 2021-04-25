@@ -71,7 +71,8 @@ namespace EHR.Server.Hubs
 
         public async Task SendOneMessage(string MRN, object message, string partnerConnId)
         {
-            throw new NotImplementedException();
+            await Clients.Client(partnerConnId).SendAsync("ServerMessage", message);
+            //throw new NotImplementedException();
         }
 
         //Deprecated
