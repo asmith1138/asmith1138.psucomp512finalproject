@@ -91,6 +91,18 @@ namespace EHR.Client
                 }
             ));
         }
+        public void ShowStatusMsg(string msg)
+        {
+            chatArea.Dispatcher.Invoke(DispatcherPriority.Normal,
+                new Action(delegate ()
+                {
+                    chatArea.Text += msg;
+                    chatArea.Text += Environment.NewLine;
+                    chatArea.ScrollToEnd();
+                }
+            ));
+        }
+
         public void ShowStatus(string txt)
         {
             chatArea.Dispatcher.Invoke(DispatcherPriority.Normal,
@@ -101,7 +113,7 @@ namespace EHR.Client
 
         private void startChat(object sender, RoutedEventArgs e)
         {
-            _cp = new ChatProxy(this.ShowMessage, this.ShowStatus, token, patient, settings, username);
+            _cp = new ChatProxy(this.ShowMessage, this.ShowStatus, this.ShowStatusMsg, token, patient, settings, username);
             if (_cp.Status)
             {
                 chatArea.Text += ("Ready to chat!");

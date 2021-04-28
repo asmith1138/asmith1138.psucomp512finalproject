@@ -23,15 +23,17 @@ namespace EHR.Client.Helpers
         public string _username;
         public delegate void ShowReceivedMessage(Message m);
         public delegate void ShowError(string txt);
+        public delegate void ShowStatusMsg(string txt);
         private ShowReceivedMessage _srm;
         private ShowError _sst;
+        private ShowStatusMsg _stm;
         private List<Tuple<string,string,HttpClient>> _clients;
         private IWebHost _host;
         private HubConnection _server;
         private AppSettings _settings;
 
         //constructor
-        public ChatProxy(ShowReceivedMessage srm, ShowError sst, string token, Patient patient, AppSettings settings, string username)
+        public ChatProxy(ShowReceivedMessage srm, ShowError sst, ShowStatusMsg stm, string token, Patient patient, AppSettings settings, string username)
         {
             _patient = patient;
             _token = token;
@@ -42,6 +44,7 @@ namespace EHR.Client.Helpers
             {
                 _srm = srm;
                 _sst = sst;
+                _stm = stm;
 
                 _clients = new List<Tuple<string, string, HttpClient>>();
                 //AddNewClient("-1","Local",partneraddress);
@@ -103,12 +106,15 @@ namespace EHR.Client.Helpers
                 if(ConnId != _server.ConnectionId)
                 {
                     AddNewClient(ConnId, username, uri);
+                    ShowStatus(username + " has joined");
                 }       
             });
 
             //uri to be removed
             _server.On<string>("Left", (ConnId) =>
             {
+
+                ShowStatus(_clients.SingleOrDefault(c => c.Item1 == ConnId).Item2 + " has left");
                 _clients.Remove(_clients.SingleOrDefault(c => c.Item1 == ConnId));
             });
 
@@ -133,6 +139,7 @@ namespace EHR.Client.Helpers
                         if (part.ConnId != _server.ConnectionId)
                         {
                             AddNewClient(part.ConnId, part.Name, part.Url);
+                            ShowStatus(part.Name + " has joined");
                         }
                     }
                 }
@@ -177,6 +184,11 @@ namespace EHR.Client.Helpers
             _sst(txt);
         }
 
+        private void ShowStatus(string txt)
+        {
+            _stm(txt);
+        }
+
         public async void SendMessage(Message m)
         {
             foreach (var client in _clients)
@@ -191,7 +203,6 @@ namespace EHR.Client.Helpers
                 }
                 catch (Exception e)
                 {
-                    //TODO: Call server for 1 partner that failed 
                     await _server.InvokeAsync("SendOneMessage", _patient.MRN, m, client.Item1);
                     ShowErrorMsg("A member is unreachable!");
                 }

@@ -10,6 +10,7 @@ namespace EHR.Client.Helpers
 {
     public static class NetworkIP
     {
+        //This was getting the wrong IP on my laptop
         public static string GetLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -23,6 +24,7 @@ namespace EHR.Client.Helpers
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
+        //First try wifi then ethernet and return a local IP address
         public static string GetLocalIP()
         {
             string ip = "";
@@ -38,10 +40,11 @@ namespace EHR.Client.Helpers
             string output = "";  // default output
             foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces()) // Iterate over each network interface
             {  // Find the network interface which has been provided in the arguments, break the loop if found
+                //Perhaps removing the type check in this if could allow for any connection type
                 if (item.NetworkInterfaceType == _type && item.OperationalStatus == OperationalStatus.Up)
                 {   // Fetch the properties of this adapter
                     IPInterfaceProperties adapterProperties = item.GetIPProperties();
-                    // Check if the gateway adress exist, if not its most likley a virtual network or smth
+                    // Check if the gateway address exists, if not its most likley a virtual network or smth
                     if (adapterProperties.GatewayAddresses.FirstOrDefault() != null)
                     {   // Iterate over each available unicast adresses
                         foreach (UnicastIPAddressInformation ip in adapterProperties.UnicastAddresses)
