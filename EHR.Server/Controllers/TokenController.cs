@@ -21,12 +21,14 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TokenController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //user, signin, and role managers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _config;
 
-
+        //DI
         public TokenController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
@@ -43,6 +45,7 @@ namespace EHR.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GenerateToken([FromBody] UserModel model)
         {
+            //login and generate a token
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Username);
@@ -54,7 +57,7 @@ namespace EHR.Server.Controllers
                     var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
                     if (result.Succeeded)
                     {
-
+                        //set claims for token
                         var claims = new[]
                         {
                           new Claim(JwtRegisteredClaimNames.Sub, user.Email),
@@ -89,6 +92,8 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser([FromBody] UserModel model)
         {
+            //create a user, the version on user controller would not create a user that could login with a password
+            //this method uses the Identity methods to create a secure user
             if (ModelState.IsValid)
             {
                 if (model.Password == model.ConfirmPassword)

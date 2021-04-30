@@ -17,8 +17,11 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PatientsController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //data context
         private readonly EHRContext _context;
 
+        //DI
         public PatientsController(EHRContext context)
         {
             _context = context;
@@ -29,6 +32,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
         {
+            //get all patients, used by dashboard on load
             var patients = await _context.Patients
                 .Include(p => p.Tests).ThenInclude(t => t.UserOrdered)
                 .Include(p => p.Tests).ThenInclude(t => t.TestType)
@@ -43,6 +47,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public ActionResult<Patient> GetPatient(Guid id)
         {
+            //get patient by id
             var patient = _context.Patients
                 .Include(p => p.Tests).Include(p => p.Medications).Include(p => p.Notes).Include(p => p.CareTeam)
                 .SingleOrDefault(p => p.MRN == id);
@@ -61,6 +66,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutPatient(Guid id, Patient patient)
         {
+            //update patient, currently unused
             if (id != patient.MRN)
             {
                 return BadRequest();
@@ -93,6 +99,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Patient>> PostPatient(Patient patient)
         {
+            //add new patient, currently unsued
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
 
@@ -104,6 +111,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeletePatient(Guid id)
         {
+            //delete patient, currently unused
             var patient = await _context.Patients.FindAsync(id);
             if (patient == null)
             {
@@ -116,6 +124,7 @@ namespace EHR.Server.Controllers
             return NoContent();
         }
 
+        ////does patient exist, unused
         private bool PatientExists(Guid id)
         {
             return _context.Patients.Any(e => e.MRN == id);

@@ -18,8 +18,11 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MedicationsController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //data context
         private readonly EHRContext _context;
 
+        //DI
         public MedicationsController(EHRContext context)
         {
             _context = context;
@@ -30,6 +33,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Medication>>> GetMedications()
         {
+            //Get medications, unused endpoint
             return await _context.Medications.ToListAsync();
         }
 
@@ -38,6 +42,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<Medication>> GetMedication(int id)
         {
+            //get a single medication by id, unused endpoint
             var medication = await _context.Medications.FindAsync(id);
 
             if (medication == null)
@@ -54,6 +59,7 @@ namespace EHR.Server.Controllers
         [Route("Patient/{id}")]
         public ActionResult<IEnumerable<Medication>> GetPatientMedications(Guid id)
         {
+            //get patient meds, called from dashboard
             var meds = _context.Medications.Where(t => t.PatientId == id);
 
             if (meds == null)
@@ -70,6 +76,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutMedication(int id, Medication medication)
         {
+            //update med, currently unused
             if (id != medication.Id)
             {
                 return BadRequest();
@@ -103,6 +110,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Medication>> PostMedication(Medication medication)
         {
+            //post new med used by add med window
             medication.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Medications.Add(medication);
             await _context.SaveChangesAsync();
@@ -115,6 +123,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteMedication(int id)
         {
+            //delete med, currently unused
             var medication = await _context.Medications.FindAsync(id);
             if (medication == null)
             {
@@ -127,6 +136,7 @@ namespace EHR.Server.Controllers
             return NoContent();
         }
 
+        //does med exist, unused
         private bool MedicationExists(int id)
         {
             return _context.Medications.Any(e => e.Id == id);

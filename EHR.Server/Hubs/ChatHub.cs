@@ -10,13 +10,16 @@ namespace EHR.Server.Hubs
 {
     public class ChatHub : Hub
     {
+        //room manager to manage patient based chat rooms
         private static RoomManager roomManager = new RoomManager();
 
+        //new connection
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
         }
 
+        //on disconnect for any reason remove them from rooms
         public override Task OnDisconnectedAsync(Exception exception)
         {
             string mrn = roomManager.FindRoomByConnectionId(Context.ConnectionId).MRN;
@@ -39,6 +42,7 @@ namespace EHR.Server.Hubs
         //    }
         //}
 
+        //on join add to room and notify participants, also send list to caller
         public async Task Join(string MRN, string username, string uri)
         {
             if(roomManager.AddToRoom(MRN, Context.ConnectionId, username, uri))
@@ -57,6 +61,7 @@ namespace EHR.Server.Hubs
             
         }
 
+        //leave a room, remove from room and notify
         public async Task Leave(string MRN, string ConnId)
         {
             roomManager.RemoveFromRoom(MRN, ConnId);
@@ -64,35 +69,34 @@ namespace EHR.Server.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, MRN);
         }
 
-        public async Task SendMessage(string MRN, object message)//This is a fallback method, it has not been implemented on clients
+        //This is a fallback method, it has not been implemented on clients
+        //It will send messages to all chatters
+        public async Task SendMessage(string MRN, object message)
         {
             await Clients.OthersInGroup(MRN).SendAsync("ServerMessage", message);
         }
 
+        //Send message to 1 participant, this is used as a fallback on the client
         public async Task SendOneMessage(string MRN, object message, string partnerConnId)
         {
             await Clients.Client(partnerConnId).SendAsync("ServerMessage", message);
-            //throw new NotImplementedException();
         }
 
-        //Deprecated
-        /// <summary>
-        /// Room management for WebRTCHub
-        /// </summary>
+        /// Room management for Chat
         public class RoomManager
         {
             private int nextRoomId;
-            /// <summary>
             /// Room List (key:RoomId)
-            /// </summary>
             private ConcurrentDictionary<int, RoomInfo> rooms;
 
+            //key increments, its not really used though
             public RoomManager()
             {
                 nextRoomId = 1;
                 rooms = new ConcurrentDictionary<int, RoomInfo>();
             }
 
+            //create a new room
             public RoomInfo CreateRoom(string MRN)
             {
                 rooms.TryRemove(nextRoomId, out _);
@@ -118,6 +122,7 @@ namespace EHR.Server.Hubs
                 }
             }
 
+            //add someone to a room
             public bool AddToRoom(string mrn, string id, string username, string uri)
             {
                 bool result = true;
@@ -134,22 +139,26 @@ namespace EHR.Server.Hubs
                 return result;
             }
 
+            //find a room, return the room by patient info
             public RoomInfo FindRoom(string mrn)
             {
                 return rooms.SingleOrDefault(r => r.Value.MRN == mrn).Value;
             }
 
+            //find a room by a participant connection id
             public RoomInfo FindRoomByConnectionId(string id)
             {
                 return rooms.FirstOrDefault(r => r.Value.Participants.Any(p => p.Item1 == id)).Value;
             }
 
+            //remove a connection id from a room
             public void RemoveFromRoom(string mrn, string id)
             {
                 rooms.SingleOrDefault(r => r.Value.MRN == mrn).Value.Participants.Remove(
                     rooms.SingleOrDefault(rm => rm.Value.MRN == mrn).Value.Participants.SingleOrDefault(p=>p.Item1 == id));
             }
 
+            //remove a connection id from all rooms
             public void RemoveFromAnyRoom(string id)
             {
                 foreach(var room in rooms)
@@ -158,17 +167,20 @@ namespace EHR.Server.Hubs
                 }
             }
 
+            //delete a room
             public void DeleteRoom(int roomId)
             {
                 rooms.TryRemove(roomId, out _);
             }
 
+            //return all room info
             public List<RoomInfo> GetAllRoomInfo()
             {
                 return rooms.Values.ToList();
             }
         }
 
+        //room info class
         public class RoomInfo
         {
             public string RoomId { get; set; }

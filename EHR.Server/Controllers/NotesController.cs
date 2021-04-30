@@ -18,8 +18,11 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NotesController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //data context
         private readonly EHRContext _context;
 
+        //DI
         public NotesController(EHRContext context)
         {
             _context = context;
@@ -30,6 +33,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
         {
+            //Get notes, unused endpoint
             return await _context.Notes.ToListAsync();
         }
 
@@ -38,6 +42,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<Note>> GetNote(int id)
         {
+            //get a single note by id, unused endpoint
             var note = await _context.Notes.FindAsync(id);
 
             if (note == null)
@@ -54,6 +59,7 @@ namespace EHR.Server.Controllers
         [Route("Patient/{id}")]
         public ActionResult<IEnumerable<Note>> GetPatientNotes(Guid id)
         {
+            //get patient notes, called from dashboard
             var notes = _context.Notes.Where(t => t.PatientId == id);
 
             if (notes == null)
@@ -70,6 +76,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutNote(int id, Note note)
         {
+            //update note, currently unused
             if (id != note.Id)
             {
                 return BadRequest();
@@ -103,6 +110,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Note>> PostNote(Note note)
         {
+            //post new note used by add note window
             note.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Notes.Add(note);
             await _context.SaveChangesAsync();
@@ -115,6 +123,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteNote(int id)
         {
+            //delete note, currently unused
             var note = await _context.Notes.FindAsync(id);
             if (note == null)
             {
@@ -127,6 +136,7 @@ namespace EHR.Server.Controllers
             return NoContent();
         }
 
+        //does note exist, unused
         private bool NoteExists(int id)
         {
             return _context.Notes.Any(e => e.Id == id);
