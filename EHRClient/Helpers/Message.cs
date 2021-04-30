@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EHR.Client.Helpers
 {
+    //Message with timestamp, text, username, and a serialized message for transport
     public class Message
     {
         public string Username { get; set; }
@@ -34,7 +35,7 @@ namespace EHR.Client.Helpers
             serializedMessage = JsonConvert.SerializeObject(dict);
         }
     }
-
+    //Simple reciever for controller
     public class MessageReceiver
     {
         public string Text { get; set; }

@@ -27,13 +27,14 @@ namespace EHR.Client
     /// </summary>
     public partial class Dashboard : Window, IActivable
     {
-        private string token;
-        private Patient patient;
-        private List<Patient> patients;
+        private string token;//auth token
+        private Patient patient;//current patient
+        private List<Patient> patients;//all patients
         private readonly AppSettings settings;
         private readonly SimpleNavigationService navigationService;
         private string username;
 
+        //set up dependency injection for settings and nav service
         public Dashboard(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
@@ -41,6 +42,7 @@ namespace EHR.Client
             this.settings = settings.Value;
         }
 
+        //runs on window load
         public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
@@ -50,11 +52,13 @@ namespace EHR.Client
             return Task.CompletedTask;
         }
 
+        //set patient data
         private void setPatients()
         {
             GetPatientInfo().Wait();
         }
 
+        //get all the patients from server
         public async Task GetPatientInfo()
         {
             // Initialization.  
@@ -108,12 +112,14 @@ namespace EHR.Client
             this.patients = patientsList;
         }
 
+        //logout
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             navigationService.ShowAsync<MainWindow>().Wait();
             this.Close();
         }
 
+        //load add med and handle the return
         private void AddMed_Click(object sender, RoutedEventArgs e)
         {
             bool? dialog = navigationService.ShowDialogAsync<MedicationAdd>(this.token, this.patient, this.username).Result;
@@ -124,6 +130,7 @@ namespace EHR.Client
             }
         }
 
+        //load add test and handle the return
         private void AddTest_Click(object sender, RoutedEventArgs e)
         {
             bool? dialog = navigationService.ShowDialogAsync<TestAdd>(this.token, this.patient, this.username).Result;
@@ -134,6 +141,7 @@ namespace EHR.Client
             }
         }
 
+        //load add note and handle the return
         private void AddNote_Click(object sender, RoutedEventArgs e)
         {
             bool? dialog = navigationService.ShowDialogAsync<NoteAdd>(this.token, this.patient, this.username).Result;
@@ -144,25 +152,28 @@ namespace EHR.Client
             }
         }
 
-
+        //open med window
         private void Medications_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Medication med = new Medication(this.token, this.patient, (EHR.Data.Models.Medication)this.Medications.SelectedValue);
             bool? dialog = med.ShowDialog();
         }
 
+        //open test window
         private void Tests_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Test test = new Test(this.token, this.patient, (EHR.Data.Models.Test)this.Tests.SelectedValue);
             bool? dialog = test.ShowDialog();
         }
 
+        //open note window
         private void Notes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Note note = new Note(this.token, this.patient, (EHR.Data.Models.Note)this.Notes.SelectedValue);
             bool? dialog = note.ShowDialog();
         }
 
+        //change to another patient
         private void PatientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             patient = (Patient)this.PatientsList.SelectedItem;
@@ -177,6 +188,7 @@ namespace EHR.Client
             this.Tests.ItemsSource = patient.Tests;
         }
 
+        //get just the tests for this patient and reset them
         public async Task GetPatientTestInfo()
         {
             // Initialization.  
@@ -188,7 +200,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -230,6 +242,7 @@ namespace EHR.Client
             this.patient.Tests = testList;
         }
 
+        //get just the note for this patient and reset them
         public async Task GetPatientNoteInfo()
         {
             // Initialization.  
@@ -241,7 +254,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -283,6 +296,7 @@ namespace EHR.Client
             this.patient.Notes = noteList;
         }
 
+        //get just the meds for this patient and reset them
         public async Task GetPatientMedInfo()
         {
             // Initialization.  
@@ -294,7 +308,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -336,6 +350,7 @@ namespace EHR.Client
             this.patient.Medications = medList;
         }
 
+        //open chat window
         private void Chat_Click(object sender, RoutedEventArgs e)
         {
             navigationService.ShowAsync<Chat>(token, patient, username).Wait();

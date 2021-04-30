@@ -16,6 +16,7 @@ namespace EHR.Client.Helpers
 {
     class P2PServer
     {
+        //config for peer to peer local web server to listen for peers
         public void Configuration(IAppBuilder appBuilder)
         {
             HttpListener listener =

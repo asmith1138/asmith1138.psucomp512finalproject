@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace EHR.Client.Helpers
 {
+    //Class to map settings
     public class AppSettings
     {
         public string ApiUrl { get; set; }

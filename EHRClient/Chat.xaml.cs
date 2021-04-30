@@ -23,9 +23,9 @@ namespace EHR.Client
     /// </summary>
     public partial class Chat : Window, IActivable
     {
-        private ChatProxy _cp { get; set; }
-        private Patient patient;
-        private string token;
+        private ChatProxy _cp { get; set; }//Proxy class that runs chat services
+        private Patient patient;//patient info
+        private string token;//auth token
         private readonly AppSettings settings;
         private string username;
 
@@ -34,6 +34,7 @@ namespace EHR.Client
             InitializeComponent();
             this.settings = settings.Value;
         }
+        //Runs on window load
         public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
@@ -42,11 +43,14 @@ namespace EHR.Client
             return Task.CompletedTask;
         }
 
+        //Send a message thru chat
         private void sendMessage(Message m)
         {
             _cp.SendMessage(m);
             inputText.Clear();
         }
+
+        //warn user if chat hasnt begun, send on enter key
         private void userInputText_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -65,6 +69,7 @@ namespace EHR.Client
             }
         }
 
+        //send click event, warn user if chat hasnt started
         private void click_sendMessage(object sender, RoutedEventArgs e)
         {
             if (_cp != null)
@@ -80,6 +85,7 @@ namespace EHR.Client
             }
         }
 
+        //callback delegate to show messages coming in
         public void ShowMessage(Message m)
         {
             chatArea.Dispatcher.Invoke(DispatcherPriority.Normal,
@@ -91,6 +97,8 @@ namespace EHR.Client
                 }
             ));
         }
+
+        //callback delegate to show status coming in
         public void ShowStatusMsg(string msg)
         {
             chatArea.Dispatcher.Invoke(DispatcherPriority.Normal,
@@ -103,6 +111,7 @@ namespace EHR.Client
             ));
         }
 
+        //badly named show error callback delegate
         public void ShowStatus(string txt)
         {
             chatArea.Dispatcher.Invoke(DispatcherPriority.Normal,
@@ -111,6 +120,7 @@ namespace EHR.Client
             ));
         }
 
+        //start the chat proxy which starts the various services
         private void startChat(object sender, RoutedEventArgs e)
         {
             _cp = new ChatProxy(this.ShowMessage, this.ShowStatus, this.ShowStatusMsg, token, patient, settings, username);
@@ -121,6 +131,7 @@ namespace EHR.Client
             }
         }
 
+        //close connections
         private void Chat_Closed(object sender, EventArgs e)
         {
             _cp?.stopChatServer();

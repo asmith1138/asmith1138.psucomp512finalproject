@@ -8,6 +8,7 @@ namespace EHR.Client.Helpers
 {
     public class MessageEventArgs : EventArgs
     {
+        //event to throw
         public MessageEventArgs(Message m)
         {
             this.Message = m;

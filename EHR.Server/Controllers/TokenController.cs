@@ -1,5 +1,7 @@
 ﻿using EHR.Data.Models;
 using EHR.Server.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,7 @@ namespace EHR.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TokenController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
@@ -37,6 +40,7 @@ namespace EHR.Server.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> GenerateToken([FromBody] UserModel model)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace EHR.Server.Controllers
 
         [HttpPost]
         [Route("CreateUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser([FromBody] UserModel model)
         {
             if (ModelState.IsValid)

@@ -9,6 +9,7 @@ using System.Windows;
 
 namespace EHR.Client.Helpers
 {
+    //dependency injection for open and close of windows
     public interface IActivable
     {
         Task ActivateAsync(string token, Patient patient, string username = null);

@@ -29,7 +29,7 @@ namespace EHRClient
         public IServiceProvider ServiceProvider { get; private set; }
 
         public IConfiguration Configuration { get; private set; }
-
+        //startup configuration
         protected override void OnStartup(StartupEventArgs e)
         {
             var builder = new ConfigurationBuilder()
