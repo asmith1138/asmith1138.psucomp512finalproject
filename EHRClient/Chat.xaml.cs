@@ -40,6 +40,7 @@ namespace EHR.Client
             this.token = token;
             this.patient = patient;
             this.username = username;
+            this.Title = "Chat - " + patient.Name;
             return Task.CompletedTask;
         }
 

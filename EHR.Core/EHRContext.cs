@@ -4,6 +4,7 @@ using System;
 
 namespace EHR.Data
 {
+    //Entity Framework dbcontext extension for access to the database in code
     public partial class EHRContext : DbContext
     {
         public EHRContext()
@@ -25,6 +26,8 @@ namespace EHR.Data
         public DbSet<TestType> TypesOfTests { get; set; }
         public DbSet<Medication> Medications { get; set; }
 
+
+        //default connection string if one isnt passed in by the startup
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -33,6 +36,7 @@ namespace EHR.Data
             }
         }
 
+        //configure the relationships here
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Covering>(eb =>

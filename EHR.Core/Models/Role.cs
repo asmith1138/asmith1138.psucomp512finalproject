@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EHR.Data.Models
 {
+    //Wrapper around IdentityRole
     public class Role : IdentityRole
     {
         //public int Id { get; set; }

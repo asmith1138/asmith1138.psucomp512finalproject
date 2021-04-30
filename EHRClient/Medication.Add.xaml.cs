@@ -25,9 +25,9 @@ namespace EHR.Client
     /// </summary>
     public partial class MedicationAdd : Window, IActivable
     {
-        private string token;
-        private EHR.Data.Models.Medication medication;
-        private Patient patient;
+        private string token;//auth token
+        private EHR.Data.Models.Medication medication;//new med
+        private Patient patient;//current patient
         private readonly AppSettings settings;
         private readonly SimpleNavigationService navigationService;
         public MedicationAdd(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
@@ -37,6 +37,7 @@ namespace EHR.Client
             this.settings = settings.Value;
         }
 
+        //on load
         public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
@@ -46,6 +47,7 @@ namespace EHR.Client
             return Task.CompletedTask;
         }
 
+        //build medication and post to server, then close
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.medication.Name = this.PatientMed.Text;
@@ -64,6 +66,7 @@ namespace EHR.Client
             PostMedicationInfo().Wait();
         }
 
+        //post new medication to server
         public async Task PostMedicationInfo()
         {
             try

@@ -11,6 +11,7 @@ namespace EHR.Data.Migrations
     [DbContext(typeof(EHRContext))]
     partial class EHRContextModelSnapshot : ModelSnapshot
     {
+        //Entity Framework model building for database migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

@@ -23,6 +23,8 @@ namespace EHR.Client
         private string token;
         private EHR.Data.Models.Test test;
         private Patient patient;
+        
+        //load page
         public Test(string token, Patient patient, EHR.Data.Models.Test test)
         {
             InitializeComponent();

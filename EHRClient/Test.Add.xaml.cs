@@ -25,12 +25,14 @@ namespace EHR.Client
     /// </summary>
     public partial class TestAdd : Window, IActivable
     {
-        private string token;
-        private EHR.Data.Models.Test test;
-        private Patient patient;
+        private string token;//auth token
+        private EHR.Data.Models.Test test;//new test
+        private Patient patient;//current patient
         private List<TestType> testTypes;
         private readonly AppSettings settings;
         private readonly SimpleNavigationService navigationService;
+
+        //DI
         public TestAdd(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
@@ -38,17 +40,19 @@ namespace EHR.Client
             this.settings = settings.Value;
         }
 
+        //on load
         public Task ActivateAsync(string token, Patient patient, string username)
         {
             this.token = token;
             this.test = new EHR.Data.Models.Test();
             this.patient = patient;
             this.PatientName.Content = patient.Name;
-            getTestTypes();
-            this.TestTypeId.ItemsSource = testTypes;
+            getTestTypes();//get test types from server
+            this.TestTypeId.ItemsSource = testTypes;//set dropdown
             return Task.CompletedTask;
         }
 
+        //post test to server and close
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.test.PatientId = patient.MRN;
@@ -67,6 +71,7 @@ namespace EHR.Client
             PostTestInfo().Wait();
         }
 
+        //post test to server
         public async Task PostTestInfo()
         {
             try
@@ -117,6 +122,7 @@ namespace EHR.Client
             }
         }
 
+        //get types from server and set to dropdown
         public async Task GetTestTypeInfo()
         {
             // Initialization.  

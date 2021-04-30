@@ -23,6 +23,8 @@ namespace EHR.Client
         private string token;
         private EHR.Data.Models.Note note;
         private Patient patient;
+
+        //load page
         public Note(string token, Patient patient, EHR.Data.Models.Note note)
         {
             InitializeComponent();

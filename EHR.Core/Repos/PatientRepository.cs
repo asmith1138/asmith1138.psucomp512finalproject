@@ -8,8 +8,12 @@ namespace EHR.Data.Repos
 {
     public class PatientRepository : IPatientRepository
     {
-        private readonly EHRContext db = new EHRContext();
+        //The repository method is useful for DI and
+        //separating domain models from data transport models
+        //but I chose not to implement this at this time
 
+        private readonly EHRContext db = new EHRContext();
+        
         public PatientRepository()
         {
             //Add(new ContactModel { Id = 0, Name = "Item 1", Email = "This is an item description." });

@@ -6,6 +6,8 @@ using System.Text;
 
 namespace EHR.Data.Models
 {
+    //Related to covering, notes, tests, meds, and roles
+    //ASP.NET Identity handles the rest of this table definition through IdentityUser inheritence
     public class User : IdentityUser
     {
         //public Guid Id { get; set; }

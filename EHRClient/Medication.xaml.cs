@@ -24,6 +24,7 @@ namespace EHR.Client
         private EHR.Data.Models.Medication medication;
         private Patient patient;
 
+        //load page
         public Medication(string token, Patient patient, EHR.Data.Models.Medication med)
         {
             InitializeComponent();
