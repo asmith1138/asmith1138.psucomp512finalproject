@@ -6,6 +6,8 @@ using System.Text;
 
 namespace EHR.Data.Models
 {
+    //list of patients and users covering them
+    //not used in current application
     public class Covering
     {
         public Guid PatientId { get; set; }

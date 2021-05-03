@@ -1,0 +1,15 @@
+[Unit]
+Description=EHR App
+
+[Service]
+WorkingDirectory=/var/www/DistributedEHR/EHR.Server
+ExecStart=/usr/bin/dotnet /var/www/DistributedEHR/EHR.Server/bin/Debug/netcoreapp3.1/EHR.Server.dll
+Restart=always
+RestartSec=10
+SyslogIdentifier=EHR
+User=andrew
+Environment=ASPNETCORE_ENVIRONMENT=Release
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target

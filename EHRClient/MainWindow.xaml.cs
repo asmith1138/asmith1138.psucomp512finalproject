@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +30,7 @@ namespace EHRClient
         private readonly AppSettings settings;
         private readonly SimpleNavigationService navigationService;
 
+        //DI(dependency injection)
         public MainWindow(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
@@ -38,11 +38,13 @@ namespace EHRClient
             this.navigationService = navigationService;
         }
 
-        public Task ActivateAsync(string token, Patient patient)
+        //runs on window load
+        public Task ActivateAsync(string token, Patient patient, string username)
         {
             return Task.CompletedTask;
         }
 
+        //post login info, open dashboard and close on success
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             string token = PostRegInfo(this.Username.Text, this.Password.Password, this.Email.Text).Result;
@@ -50,7 +52,7 @@ namespace EHRClient
             {
                 //Dashboard dash = new Dashboard(token);
                 //dash.Show();
-                navigationService.ShowAsync<Dashboard>(token).Wait();
+                navigationService.ShowAsync<Dashboard>(token, null, this.Username.Text).Wait();
                 this.Close();
             }
             else
@@ -58,6 +60,8 @@ namespace EHRClient
 
             }
         }
+
+        //post to get token
         public async Task<string> PostRegInfo(string username, string password, string email)
         {
             //Initialization
@@ -109,57 +113,6 @@ namespace EHRClient
             }
 
             return token;
-        }
-        public static async Task<object> PostRegInfo(object requestObj)
-        {
-            // Initialization.  
-            object responseObj = new object();
-
-            try
-            {
-                // Posting.  
-                using (var client = new HttpClient())
-                {
-                    // Setting Base address.  
-                    client.BaseAddress = new Uri("http://localhost:19006/");
-
-                    // Setting content type.  
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    // Setting timeout.  
-                    client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                    // Initialization.  
-                    HttpResponseMessage response = new HttpResponseMessage();
-
-                    // HTTP POST  
-                    response = await client.PostAsJsonAsync("api/WebApi/PostRegInfo", requestObj).ConfigureAwait(false);
-
-                    // Verification  
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Reading Response.  
-                        string result = response.Content.ReadAsStringAsync().Result;
-                        responseObj = JsonConvert.DeserializeObject<object>(result);
-
-                        // Releasing.  
-                        response.Dispose();
-                    }
-                    else
-                    {
-                        // Reading Response.  
-                        string result = response.Content.ReadAsStringAsync().Result;
-                        //responseObj.code = 602;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return responseObj;
         }
     }
 }

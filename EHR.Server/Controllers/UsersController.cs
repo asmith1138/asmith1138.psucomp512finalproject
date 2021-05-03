@@ -18,8 +18,11 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //data context
         private readonly EHRContext _context;
 
+        //DI
         public UsersController(EHRContext context)
         {
             _context = context;
@@ -30,6 +33,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
+            //get all users, unused
             return await _context.Users.ToListAsync();
         }
 
@@ -38,6 +42,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUser(string id)
         {
+            //get 1 user, unused
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
@@ -54,6 +59,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse,Admin")]
         public async Task<ActionResult<User>> GetMe()
         {
+            //get the user that you are, unused
             string email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
@@ -71,6 +77,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutUser(string id, User user)
         {
+            //update user, unused
             if (id != user.Id)
             {
                 return BadRequest();
@@ -103,6 +110,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            //add new user, unused
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -114,6 +122,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
+            //delete user, unused
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
@@ -126,6 +135,7 @@ namespace EHR.Server.Controllers
             return NoContent();
         }
 
+        //does a user exist, unsused
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);

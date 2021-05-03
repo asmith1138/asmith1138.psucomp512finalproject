@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EHR.Data.Models
 {
+    //Test for a patient, related to user by user ordered, has a test type
     public class Test
     {
         public int Id { get; set; }

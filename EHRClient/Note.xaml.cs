@@ -23,6 +23,8 @@ namespace EHR.Client
         private string token;
         private EHR.Data.Models.Note note;
         private Patient patient;
+
+        //load page
         public Note(string token, Patient patient, EHR.Data.Models.Note note)
         {
             InitializeComponent();
@@ -32,7 +34,7 @@ namespace EHR.Client
             this.PatientName.Content = patient.Name;
             this.NoteText.Content = note.Text;
             this.Recorded.Content = note.Recorded;
-            this.NoteBy.Content = note.UserOrdered.UserName;
+            this.NoteBy.Content = note.UserOrdered?.UserName;
         }
     }
 }
