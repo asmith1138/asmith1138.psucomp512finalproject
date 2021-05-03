@@ -1,11 +1,13 @@
 ﻿using EHR.Client;
+using EHR.Client.Helpers;
+using EHR.Data.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,20 +25,34 @@ namespace EHRClient
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IActivable
     {
-        public MainWindow()
+        private readonly AppSettings settings;
+        private readonly SimpleNavigationService navigationService;
+
+        //DI(dependency injection)
+        public MainWindow(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
+            this.settings = settings.Value;
+            this.navigationService = navigationService;
         }
 
+        //runs on window load
+        public Task ActivateAsync(string token, Patient patient, string username)
+        {
+            return Task.CompletedTask;
+        }
+
+        //post login info, open dashboard and close on success
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             string token = PostRegInfo(this.Username.Text, this.Password.Password, this.Email.Text).Result;
             if (token != string.Empty)
             {
-                Dashboard dash = new Dashboard(token);
-                dash.Show();
+                //Dashboard dash = new Dashboard(token);
+                //dash.Show();
+                navigationService.ShowAsync<Dashboard>(token, null, this.Username.Text).Wait();
                 this.Close();
             }
             else
@@ -44,7 +60,9 @@ namespace EHRClient
 
             }
         }
-        public static async Task<string> PostRegInfo(string username, string password, string email)
+
+        //post to get token
+        public async Task<string> PostRegInfo(string username, string password, string email)
         {
             //Initialization
             string token = string.Empty;
@@ -55,7 +73,7 @@ namespace EHRClient
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -95,57 +113,6 @@ namespace EHRClient
             }
 
             return token;
-        }
-        public static async Task<object> PostRegInfo(object requestObj)
-        {
-            // Initialization.  
-            object responseObj = new object();
-
-            try
-            {
-                // Posting.  
-                using (var client = new HttpClient())
-                {
-                    // Setting Base address.  
-                    client.BaseAddress = new Uri("http://localhost:19006/");
-
-                    // Setting content type.  
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    // Setting timeout.  
-                    client.Timeout = TimeSpan.FromSeconds(Convert.ToDouble(1000000));
-
-                    // Initialization.  
-                    HttpResponseMessage response = new HttpResponseMessage();
-
-                    // HTTP POST  
-                    response = await client.PostAsJsonAsync("api/WebApi/PostRegInfo", requestObj).ConfigureAwait(false);
-
-                    // Verification  
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Reading Response.  
-                        string result = response.Content.ReadAsStringAsync().Result;
-                        responseObj = JsonConvert.DeserializeObject<object>(result);
-
-                        // Releasing.  
-                        response.Dispose();
-                    }
-                    else
-                    {
-                        // Reading Response.  
-                        string result = response.Content.ReadAsStringAsync().Result;
-                        //responseObj.code = 602;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return responseObj;
         }
     }
 }

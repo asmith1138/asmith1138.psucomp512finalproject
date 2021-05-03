@@ -1,12 +1,14 @@
-﻿using EHR.Data.Models;
+﻿using EHR.Client.Helpers;
+using EHR.Data.Models;
 using EHRClient;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,24 +25,40 @@ namespace EHR.Client
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class Dashboard : Window
+    public partial class Dashboard : Window, IActivable
     {
-        private string token;
-        private Patient patient;
-        private List<Patient> patients;
-        public Dashboard(string token)
+        private string token;//auth token
+        private Patient patient;//current patient
+        private List<Patient> patients;//all patients
+        private readonly AppSettings settings;
+        private readonly SimpleNavigationService navigationService;
+        private string username;
+
+        //set up dependency injection for settings and nav service
+        public Dashboard(SimpleNavigationService navigationService, IOptions<AppSettings> settings)
         {
             InitializeComponent();
+            this.navigationService = navigationService;
+            this.settings = settings.Value;
+        }
+
+        //runs on window load
+        public Task ActivateAsync(string token, Patient patient, string username)
+        {
             this.token = token;
             setPatients();
             this.PatientsList.ItemsSource = patients;
+            this.username = username;
+            return Task.CompletedTask;
         }
 
+        //set patient data
         private void setPatients()
         {
             GetPatientInfo().Wait();
         }
 
+        //get all the patients from server
         public async Task GetPatientInfo()
         {
             // Initialization.  
@@ -52,7 +70,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -94,17 +112,17 @@ namespace EHR.Client
             this.patients = patientsList;
         }
 
+        //logout
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow logon = new MainWindow();
-            logon.Show();
+            navigationService.ShowAsync<MainWindow>().Wait();
             this.Close();
         }
 
+        //load add med and handle the return
         private void AddMed_Click(object sender, RoutedEventArgs e)
         {
-            MedicationAdd medadd = new MedicationAdd(this.token, this.patient);
-            bool? dialog = medadd.ShowDialog();
+            bool? dialog = navigationService.ShowDialogAsync<MedicationAdd>(this.token, this.patient, this.username).Result;
             if (dialog.HasValue)
             {
                 GetPatientMedInfo().Wait();
@@ -112,10 +130,10 @@ namespace EHR.Client
             }
         }
 
+        //load add test and handle the return
         private void AddTest_Click(object sender, RoutedEventArgs e)
         {
-            TestAdd testadd = new TestAdd(this.token, this.patient);
-            bool? dialog = testadd.ShowDialog();
+            bool? dialog = navigationService.ShowDialogAsync<TestAdd>(this.token, this.patient, this.username).Result;
             if (dialog.HasValue)
             {
                 GetPatientTestInfo().Wait();
@@ -123,10 +141,10 @@ namespace EHR.Client
             }
         }
 
+        //load add note and handle the return
         private void AddNote_Click(object sender, RoutedEventArgs e)
         {
-            NoteAdd noteadd = new NoteAdd(this.token, this.patient);
-            bool? dialog = noteadd.ShowDialog();
+            bool? dialog = navigationService.ShowDialogAsync<NoteAdd>(this.token, this.patient, this.username).Result;
             if (dialog.HasValue)
             {
                 GetPatientNoteInfo().Wait();
@@ -134,30 +152,28 @@ namespace EHR.Client
             }
         }
 
-
+        //open med window
         private void Medications_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Medication med = new Medication(this.token, this.patient, (EHR.Data.Models.Medication)this.Medications.SelectedValue);
             bool? dialog = med.ShowDialog();
         }
 
+        //open test window
         private void Tests_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Test test = new Test(this.token, this.patient, (EHR.Data.Models.Test)this.Tests.SelectedValue);
             bool? dialog = test.ShowDialog();
-            if (dialog.HasValue)
-            {
-                //GetPatientMedInfo().Wait();
-                //this.Tests.ItemsSource = this.patient.Tests;
-            }
         }
 
+        //open note window
         private void Notes_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Note note = new Note(this.token, this.patient, (EHR.Data.Models.Note)this.Notes.SelectedValue);
             bool? dialog = note.ShowDialog();
         }
 
+        //change to another patient
         private void PatientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             patient = (Patient)this.PatientsList.SelectedItem;
@@ -172,6 +188,7 @@ namespace EHR.Client
             this.Tests.ItemsSource = patient.Tests;
         }
 
+        //get just the tests for this patient and reset them
         public async Task GetPatientTestInfo()
         {
             // Initialization.  
@@ -183,7 +200,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -225,6 +242,7 @@ namespace EHR.Client
             this.patient.Tests = testList;
         }
 
+        //get just the note for this patient and reset them
         public async Task GetPatientNoteInfo()
         {
             // Initialization.  
@@ -236,7 +254,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -278,6 +296,7 @@ namespace EHR.Client
             this.patient.Notes = noteList;
         }
 
+        //get just the meds for this patient and reset them
         public async Task GetPatientMedInfo()
         {
             // Initialization.  
@@ -289,7 +308,7 @@ namespace EHR.Client
                 using (var client = new HttpClient())
                 {
                     // Setting Base address.  
-                    client.BaseAddress = new Uri("https://localhost:44339/");
+                    client.BaseAddress = new Uri(settings.ApiUrl);
 
                     // Setting content type.  
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -329,6 +348,13 @@ namespace EHR.Client
             }
 
             this.patient.Medications = medList;
+        }
+
+        //open chat window
+        private void Chat_Click(object sender, RoutedEventArgs e)
+        {
+            navigationService.ShowAsync<Chat>(token, patient, username).Wait();
+            //Chat chat = new Chat();// (this.token, this.patient, (EHR.Data.Models.Note)this.Notes.SelectedValue);
         }
     }
 }

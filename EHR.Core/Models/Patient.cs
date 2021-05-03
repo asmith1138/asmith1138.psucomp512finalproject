@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EHR.Data.Models
 {
+    //A patient with notes, tests, meds, and list of covering for the care team
     public class Patient
     {
         public Guid MRN { get; set; }

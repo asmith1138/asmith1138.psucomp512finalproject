@@ -17,8 +17,11 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TestTypesController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //data context
         private readonly EHRContext _context;
 
+        //DI
         public TestTypesController(EHRContext context)
         {
             _context = context;
@@ -29,6 +32,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<TestType>>> GetTypesOfTests()
         {
+            //Get test types, used on add test window
             return await _context.TypesOfTests.ToListAsync();
         }
 
@@ -37,6 +41,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<TestType>> GetTestType(int id)
         {
+            //get a single test type by id, unused endpoint
             var testType = await _context.TypesOfTests.FindAsync(id);
 
             if (testType == null)
@@ -53,6 +58,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutTestType(int id, TestType testType)
         {
+            //update test type, currently unused
             if (id != testType.Id)
             {
                 return BadRequest();
@@ -85,6 +91,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<TestType>> PostTestType(TestType testType)
         {
+            //post new test type, currently unused
             _context.TypesOfTests.Add(testType);
             await _context.SaveChangesAsync();
 
@@ -96,6 +103,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteTestType(int id)
         {
+            //delete test type, currently unused
             var testType = await _context.TypesOfTests.FindAsync(id);
             if (testType == null)
             {
@@ -108,6 +116,7 @@ namespace EHR.Server.Controllers
             return NoContent();
         }
 
+        //does test type exist, unused
         private bool TestTypeExists(int id)
         {
             return _context.TypesOfTests.Any(e => e.Id == id);

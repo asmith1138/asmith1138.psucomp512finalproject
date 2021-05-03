@@ -23,6 +23,8 @@ namespace EHR.Client
         private string token;
         private EHR.Data.Models.Test test;
         private Patient patient;
+        
+        //load page
         public Test(string token, Patient patient, EHR.Data.Models.Test test)
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace EHR.Client
             this.TestType.Content = test.TestType.Name;
             this.Results.Content = test.Results;
             this.Performed.Content = test.Performed;
-            this.OrderedBy.Content = test.UserOrdered.UserName;
+            this.OrderedBy.Content = test.UserOrdered?.UserName;
         }
     }
 }

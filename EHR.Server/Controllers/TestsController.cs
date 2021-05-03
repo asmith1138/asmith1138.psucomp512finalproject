@@ -18,8 +18,11 @@ namespace EHR.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TestsController : ControllerBase
     {
+        //authorize via JwtBearer and route config
+        //data context
         private readonly EHRContext _context;
 
+        //DI
         public TestsController(EHRContext context)
         {
             _context = context;
@@ -30,6 +33,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<IEnumerable<Test>>> GetTests()
         {
+            //Get tests, unused endpoint
             return await _context.Tests.ToListAsync();
         }
 
@@ -38,6 +42,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician,Nurse")]
         public async Task<ActionResult<Test>> GetTest(int id)
         {
+            //get a single test by id, unused endpoint
             var test = await _context.Tests.FindAsync(id);
 
             if (test == null)
@@ -54,6 +59,7 @@ namespace EHR.Server.Controllers
         [Route("Patient/{id}")]
         public ActionResult<IEnumerable<Test>> GetPatientTest(Guid id)
         {
+            //get patient tests, called from dashboard
             var tests = _context.Tests.Include(t => t.TestType).Where(t => t.PatientId == id);
 
             if (tests == null)
@@ -70,6 +76,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> PutTest(int id, Test test)
         {
+            //update test, currently unused
             if (id != test.Id)
             {
                 return BadRequest();
@@ -103,6 +110,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<ActionResult<Test>> PostTest(Test test)
         {
+            //post new test used by add test window
             test.UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData).Value;
             _context.Tests.Add(test);
             await _context.SaveChangesAsync();
@@ -115,6 +123,7 @@ namespace EHR.Server.Controllers
         [Authorize(Roles = "Physician")]
         public async Task<IActionResult> DeleteTest(int id)
         {
+            //delete test, currently unused
             var test = await _context.Tests.FindAsync(id);
             if (test == null)
             {
@@ -127,6 +136,7 @@ namespace EHR.Server.Controllers
             return NoContent();
         }
 
+        //does test exist, unused
         private bool TestExists(int id)
         {
             return _context.Tests.Any(e => e.Id == id);

@@ -2,6 +2,7 @@ using EHR.Data;
 using EHR.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,9 +37,12 @@ namespace EHR.Server
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            //database connection
             var connectionString = Configuration.GetConnectionString("EHRContext");
             services.AddDbContext<EHRContext>(options => options.UseNpgsql(connectionString));
 
+            //JWT
             services.AddAuthentication()
                 .AddJwtBearer(cfg =>
                 {
@@ -55,10 +59,12 @@ namespace EHR.Server
 
                 });
             
+            //Auth from Db
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<EHRContext>();
             services.AddAuthorization();
             services.AddLogging();
+            services.AddSignalR();//websockets
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -69,6 +75,11 @@ namespace EHR.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());// .AllowCredentials());
 
@@ -86,10 +97,17 @@ namespace EHR.Server
 
             app.UseStaticFiles();
 
+            //Endpoints for web services
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<Hubs.ChatHub>("/Chat");
             });
+
+            //app.UseSignalR(routes =>
+            //{
+            //    routes.MapHub<Hubs.ChatHub>("/Chat");
+            //});
 
             //app.UseMvc();
         }

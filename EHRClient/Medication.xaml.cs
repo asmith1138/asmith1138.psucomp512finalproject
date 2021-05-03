@@ -24,6 +24,7 @@ namespace EHR.Client
         private EHR.Data.Models.Medication medication;
         private Patient patient;
 
+        //load page
         public Medication(string token, Patient patient, EHR.Data.Models.Medication med)
         {
             InitializeComponent();
@@ -34,7 +35,7 @@ namespace EHR.Client
             this.Frequency.Content = medication.Frequency;
             this.Dose.Content = medication.Dosage;
             this.ExpiresAt.Content = medication.Expires;
-            this.OrderedBy.Content = medication.UserOrdered.UserName;
+            this.OrderedBy.Content = medication.UserOrdered?.UserName;
         }
     }
 }

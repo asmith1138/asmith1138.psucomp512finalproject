@@ -5,6 +5,7 @@ using System.Text;
 
 namespace EHR.Data.Models
 {
+    //Medication for a patient, related to user by user ordered
     public class Medication
     {
         public int Id { get; set; }
