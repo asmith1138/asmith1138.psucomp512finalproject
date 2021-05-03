@@ -45,6 +45,8 @@ Alternatively, with the dotnet CLI you can buil with 'dotnet build' from the fol
 You will also need to publish to get the program to export to the publish folder above,
 use the netcore3.1 publish profile or via the CLI 'dotnet publish'
 
+Will will also need to add a new key or change the key back to the key in the private repo in EHR.Server/appsettings.json and EHR.Server/appsettings.Release.json
+
 To run the server:
 This will be difficult but I will attempt to explain.  
 1: Build via Visual Studio or CLI 'dotnet build'
