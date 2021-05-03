@@ -21,23 +21,23 @@ Password: JD@Password3
 
 Username: Turk
 Email: asmith1138+turk@gmail.com
-Password: Turk@Password3
+Password: ***
 
 Username: Carla
 Email: asmith1138+carla@gmail.com
-Password: Carla@Password3
+Password: ***
 
 Username: Elliot
 Email: asmith1138+elliot@gmail.com
-Password: Elliot@Password3
+Password: ***
 
 Username: Danielle
 Email: asmith1138+danielle@gmail.com
-Password: Danielle@Password3
+Password: ***
 
 Username: Andrew
 Email: asmith1138@gmail.com
-Password: Andrew@Password3
+Password: ***
 
 
 If you wish to build, you will need visual studio with .Net Core 3.1 and you just open the solution and build
